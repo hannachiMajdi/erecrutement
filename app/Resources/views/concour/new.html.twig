@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+{% block title %} Création d'un concours{% endblock %}
+{% block body %}
+    <div class="panel">
+
+        <div class="panel-body">
+            <h6 class="title-hero">Création d'un Concours</h6>
+            <div class="example-box-wrapper">
+                {{ form_start(form,{'attr':{'class':'form-horizontal bordered-row'}}) }}
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Réference: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.reference,{'attr':{'class':'form-control '}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Mots Clés: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.mots_cle,{'attr':
+                            {
+                                'class':'form-control',
+
+                            }}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Année: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.annee,{'attr':
+                            {
+                                'class':'form-control',
+
+                        }}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Titre: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.titre,{'attr':{'class':'form-control '}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Lieu: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.lieu,{'attr':{'class':'form-control '}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Date debut: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.dateDebut,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Date Cloture: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.dateFin,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Introduction: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.introduction,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Maniére: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.maniere,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Documents nécessaires: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.documentsNecessaire,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Observation: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.observation,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Poste demandé: <span class="tx-danger">*</span></label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.postes,{'attr':{'class':'chosen-select'}}) }}
+                    </div>
+                </div>
+
+
+
+                <div class="bg-default content-box text-center pad20A mrg25T">
+                    <button class="btn btn-lg btn-primary" >Enregistrer</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen-demo.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
+    <script type="text/javascript">
+        /* Datepicker bootstrap */
+        $(function() { "use strict";
+            $('.bootstrap-datepicker').bsdatepicker({
+                format: 'mm-dd-yyyy'
+            });
+        });
+    </script>
+
+{% endblock %}

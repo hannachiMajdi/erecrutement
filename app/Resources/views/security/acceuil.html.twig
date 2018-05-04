@@ -1,0 +1,115 @@
+{% extends 'base_front.html.twig' %}
+
+{% block body %}
+{#
+
+<div class="col-md-4 col-sm-5 col-xs-11 col-lg-3 center-margin">
+  <div id="login-form" class="content-box bg-default">
+      <div class="content-box-wrapper pad20A">
+          <img class="img-responsive logo-bg" src="{{ asset('img/logo.png') }}" alt="">
+            <a href="{{ path('login_personnel') }}">Access personnel</a> <br>
+            <a href="{{ path('login_candidat') }}">Acces candidat</a>
+
+
+
+      </div>
+   </div>
+</div>
+#}
+    <div class="panel">
+        <div class="panel-heading" >
+            <img src="{{ asset('img/logo.png') }}" class="img-thumbnail">
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+
+                    <ul class="list-group">
+                        <li class="mrg10B">
+                            <a href="#faq-tab-1" data-toggle="tab" class="list-group-item bg-white">
+                                Acceuil
+                                <i class="glyph-icon icon-angle-right mrg0A"></i>
+                            </a>
+                        </li>
+                        <li class="mrg10B">
+                            <a href="#faq-tab-2" data-toggle="tab" class="list-group-item bg-white">
+                                Contact
+                                <i class="glyph-icon font-green icon-angle-right mrg0A"></i>
+                            </a>
+                        </li>
+                        <li class="mrg10B">
+                            <a href="{{ path('login_candidat') }}" class="list-group-item bg-white">
+                                Escpace Candidat
+                                <i class="glyph-icon font-green icon-angle-right mrg0A"></i>
+                            </a>
+                        </li>
+                        <li class="mrg10B">
+                            <a href="{{ path('login_personnel') }}" class="list-group-item bg-white">
+                                Escpace Du Personnel de l'ONM
+                                <i class="glyph-icon font-green icon-angle-right mrg0A"></i>
+                            </a>
+                        </li>
+                        <li class="mrg10B">
+                            <a href="http://www.onm.nat.tn/fr/index.php"  class="list-group-item bg-white">
+                                Actualités
+                                <i class="glyph-icon icon-angle-right mrg0A"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in pad0A" id="faq-tab-1">
+                            <div class="panel-group" id="accordion5">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion5" href="#collapseOne">
+                                                Acceuil
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body pad0B">
+                                            <p class="mrg15B">  Création : l’Office National des Mines a été crée en 1962 en tant qu’établissement Public à caractère Industriel et Commercial « E.P.I.C. ».
+                                                Loi n°62-17 du 24 mai 1962</p>
+                                            <p class="mrg15B">   Intégration du Service Géologique : Le Service Géologique à été intégré à l’Office National des Mines en 1981.
+                                                Décret n°81-60 du 14 janvier 1981</p>
+
+                                            <p class="mrg15B">  Reclassement : En 1996, l’Office National des Mines est classé en tant qu'établissement Public à caractère Non Administratif « E.P.N.A. ».Loi 96-74 du 29 juillet 1996
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade pad0A" id="faq-tab-2">
+                                <div class="panel">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion5" href="#collapseTwo">
+                                                Contact
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseTwo" class="panel-collapse collapse in">
+                                        <div class="panel-body pad0B">
+                                            <div class="col-md-6">  <p class="mrg15B"> Tél. : (+216) 71 808 042 / 71 808 266</p>
+                                                <p class="mrg15B">  Fax : (+216) 71 808 098</p>
+                                                <p class="mrg15B"> Email : contact@onm.nat.tn / onm@onm.nat.tn</p>
+                                                <p class="mrg15B"> Adresse : 24 rue de l'Energie, 2035 La Charguia - Tunis BP: 215 – 1080 Tunis Cedex – Tunisie
+                                                </p></div>
+                                            <div class="col-md-6"><iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12771.294621498864!2d10.2080272!3d36.8466992!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1e7a4937f95bb604!2sOffice+National+des+Mines+(ONM)!5e0!3m2!1sfr!2stn!4v1524149563136" width="auto" height="auto" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

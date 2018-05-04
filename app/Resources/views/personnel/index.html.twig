@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestion de Personnel{% endblock %}
+{% block body %}
+<div class="panel">
+<div class="panel-body">
+    <h3 class="title-hero">
+        Liste du Personnels
+        <div class=" pull-right">
+            <a class="btn btn-success btn-sm " href="{{ path('personnel_new') }}">Ajouter un nouveau personnel</a>
+        </div>
+    </h3>
+
+    <div class="example-box-wrapper">
+
+        <table class="table table-striped table-bordered table-responsive">
+            <thead>
+                <th>Matricule</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+            {% for personnel in personnels %}
+            <tr>
+                <td>{{ personnel.matricule }}</td>
+                <td>{{ personnel.Email }}</td>
+                <td>{%  for role in personnel.roleNames %}
+                    {{ role }}</br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a href="{{ path('personnel_show',{'id':personnel.id}) }}" class="btn btn-default">Afficher</a>
+                        <a href="{{ path('personnel_edit',{'id':personnel.id}) }}" class="btn btn-default">Modifier</a>
+                        <a href="{{ path('personnel_change',{'id':personnel.id}) }}" class="btn btn-default">
+                            {% if personnel.statut %}
+                            Désactiver
+                            {% else %}
+                            Activer
+                            {% endif %}
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+{% endblock %}

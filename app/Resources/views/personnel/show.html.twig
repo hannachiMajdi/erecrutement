@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block title %}Profile d'un Personnel{% endblock %}
+{% block body %}
+<div class="panel">
+    <div class="panel-body">
+        <div class="header-buttons btn-group">
+            <a href="{{ path('personnel_edit',{'id':personnel.id}) }}" class="btn btn-black btn-xs" title="Modifier un personnel">
+                <i class="glyph-icon icon-edit"></i>
+            </a>
+            <a href="{{ path('personnel_change',{'id':personnel.id}) }}" class="btn btn-black btn-xs"
+                    {% if personnel.statut %}
+                        title="Désactiver un personnel">
+                        <i class="glyph-icon icon-lock"></i>
+                    {% else %}
+                        title="Activer un personnel">
+                        <i class="glyph-icon icon-unlock"></i>
+                    {% endif %}
+
+            </a>
+        </div>
+        <h3 class="title-hero">
+            Profile d'un membre personnel
+
+        </h3>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Matricule:</p>
+            </div>
+            <div class="col-md-6">
+                <p>{{ personnel.matricule }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Email:</p>
+            </div>
+            <div class="col-md-6">
+                <p>{{ personnel.email }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <p>Role:</p>
+            </div>
+            <div class="col-md-6">
+                {% for role in personnel.roleNames %}
+                <p>{{ role }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

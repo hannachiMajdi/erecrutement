@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des candidats{% endblock %}
+{% block body %}
+    <div class="panel">
+        <div class="panel-body">
+            <h3 class="title-hero">
+                Listes des candidat acceptées
+            </h3>
+            <div class="example-box-wrapper">
+            {{ form_start(form) }}
+                <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="datatable-example">
+                    <thead>
+                    <tr>
+                        <th>Cin</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Note pratique</th>
+                        <th>Note orale</th>
+                        <th>Note écrit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for canEx in canExs %}
+                    <tr class="odd gradeX">
+                        <td>{{ canEx.candidat.cin }}</td>
+                        <td>{{ canEx.candidat.nom }}</td>
+                        <td>{{ canEx.candidat.prenom }}</td>
+
+                        <td>
+                            <div class="input-group">
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                    <span class="input-group-addon">
+                                        <input class="custom-checkbox" required  name="p_check_{{ canEx.candidat.id }}"  type="checkbox" {% if canEx.pratique.verification %}checked{% endif %}>
+                                    </span>
+                                {% endif %}
+                                <input class="form-control" type="number" max="20" min="0" name="p_{{ canEx.candidat.id }}" value="{{ canEx.pratique.note }}" required>
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                {% if not canEx.pratique.verification %}
+                                <span class="input-group-addon bg-white font-red">
+                                        <i class="glyph-icon icon-exclamation"></i>
+                                    </span>
+                                {% else %}
+
+                                    <span class="input-group-addon bg-white font-green">
+                                        <i class="glyph-icon icon-check"></i>
+                                    </span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="input-group">
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                    <span class="input-group-addon">
+                                        <input class="custom-checkbox" required  name="o_check_{{ canEx.candidat.id }}"  type="checkbox" {% if canEx.orale.verification %}checked{% endif %}>
+                                    </span>
+                                {% endif %}
+                                <input class="form-control" type="number" max="20" min="0" name="o_{{ canEx.candidat.id }}" value="{{ canEx.orale.note }}" required>
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                {% if  not canEx.orale.verification %}
+                                    <span class="input-group-addon bg-white font-red">
+                                        <i class="glyph-icon icon-exclamation"></i>
+                                    </span>
+                                    {% else %}
+
+                                         <span class="input-group-addon bg-white font-green">
+                                            <i class="glyph-icon icon-check"></i>
+                                        </span>
+                                        {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="input-group">
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                    <span class="input-group-addon">
+                                        <input class="custom-checkbox" required name="e_check_{{ canEx.candidat.id }}" type="checkbox" {% if canEx.ecrit.verification %}checked{% endif %}>
+                                    </span>
+                                {% endif %}
+                                <input class="form-control" type="number" max="20" min="0" name="e_{{ canEx.candidat.id }}" value="{{ canEx.ecrit.note }}" required>
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                {% if not canEx.ecrit.verification %}
+                                    <span class="input-group-addon bg-white font-red">
+                                        <i class="glyph-icon icon-exclamation"></i>
+                                    </span>
+                                {% else %}
+
+                                    <span class="input-group-addon bg-white font-green">
+                                        <i class="glyph-icon icon-check"></i>
+                                    </span>
+
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <button type="submit">Enregistrer</button>
+            {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

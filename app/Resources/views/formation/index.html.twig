@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des concours{% endblock %}
+{% block body %}
+
+    <div class="panel">
+        <div class="panel-heading clearfix">
+            <a href="{{ path('formation_new') }}" class="btn  btn-success pull-right">+ Ajouter une formation</a>
+        </div>
+        <div class="panel-body">
+            <table class="table table-responsive">
+                <thead>
+                <tr>
+                    <th>Libelle</th>
+                    <th>Datedebut</th>
+                    <th>Datefin</th>
+                    <th>Module</th>
+                    <th>Lieu</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for formation in formations %}
+                    <tr>
+                        <td>{{ formation.libelle }}</td>
+                        <td>{{ formation.dateDebut}}</td>
+                        <td>{{ formation.dateFin }}</td>
+                        <td>{{ formation.module }}</td>
+                        <td>{{ formation.lieu }}</td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{{ path('formation_show', { 'id': formation.id }) }}" class="btn btn-xs btn-default">Afficher</a>
+                                {% if is_granted('ROLE_RESPONSABLE') %}
+                                <a href="{{ path('formation_edit', { 'id': formation.id }) }}" class="btn btn-xs btn-default">Modifier</a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

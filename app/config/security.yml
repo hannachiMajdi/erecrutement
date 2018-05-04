@@ -1,0 +1,38 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    encoders:
+            AuthentificationBundle\Entity\Personnel: bcrypt
+            AuthentificationBundle\Entity\Candidat: bcrypt
+    providers:
+        employees:
+            entity: { class: AuthentificationBundle\Entity\Personnel, property: matricule }
+        candidats:
+            entity: { class: AuthentificationBundle\Entity\Candidat, property: cin }
+    role_hierarchy:
+              ROLE_ADMIN: [ROLE_PER]
+              ROLE_AGENT: [ROLE_PER]
+              ROLE_RESPONSABLE: [ROLE_PER]
+              ROLE_CANDIDAT: [ROLE_USER]
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            guard:
+                 authenticators:
+                                - app.security.login_form_authenticator
+            logout:
+                  path: /logout
+
+
+    access_control:
+            - { path: ^/login,  allow_if: "not has_role('ROLE_USER')" }
+            - { path: ^/dashboard, roles: ROLE_ADMIN }
+            - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+            #- { path: ^/, roles: ROLE_USER }

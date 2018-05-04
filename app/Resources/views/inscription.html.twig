@@ -1,0 +1,97 @@
+{% extends 'base_front.html.twig' %}
+{% block title %}Inscription {% endblock %}
+{% block body %}
+    <div class="col-md-6 center-margin">
+    <h3 class="text-center pad15B font-gray text-transform-upr font-size-23">l'Office National des Mines</h3>
+    <div class="content-box border-top border-blue clearfix">
+        <div class="content-box-wrapper row">
+            <div id="login-form">
+                <div class="pad20A">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label">CIN<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.cin,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.cin) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Email<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.email) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Numéro Téléphone<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.num_telephone,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.num_telephone) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Mot de passe<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.plainPassword) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Confirmer mots de passe<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.plainPassword) }}</span>
+                        </div><!-- form-group -->
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="form-control-label">Nom<span class="tx-danger">*</span>: </label>
+                            {{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.nom) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Prénom<span class="tx-danger">*</span>: </label>
+                            {{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.prenom) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Date de naissance<span class="tx-danger">*</span>:</label>
+                            <div class="input-prepend input-group">
+                                    <span class="add-on input-group-addon">
+                                        <i class="glyph-icon icon-calendar"></i>
+                                    </span>
+                                {{ form_widget(form.date_naissance,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                            </div>
+                            <span class="tx-danger">{{ form_errors(form.date_naissance) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Adresse<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.adresse,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.adresse) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Ville<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.ville,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.ville) }}</span>
+                        </div><!-- form-group -->
+                        <div class="form-group">
+                            <label class="form-control-label">Gouvernorat<span class="tx-danger">*</span>:</label>
+                            {{ form_widget(form.gouvernorat,{'attr':{'class':'form-control'}}) }}
+                            <span class="tx-danger">{{ form_errors(form.gouvernorat) }}</span>
+                        </div><!-- form-group -->
+                    </div>
+
+                </div>
+                <button type="submit" class="btn btn-dark btn-block">S'inscrire</button>
+                <div class="tx-center bd pd-10 mg-t-40">Déja membre! <a href="{{ path('login_candidat') }}">Connexion</a></div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
+    <script type="text/javascript">
+        /* Datepicker bootstrap */
+        $(function() { "use strict";
+            $('.bootstrap-datepicker').bsdatepicker({
+                format: 'mm-dd-yyyy'
+            });
+        });
+    </script>
+{% endblock %}

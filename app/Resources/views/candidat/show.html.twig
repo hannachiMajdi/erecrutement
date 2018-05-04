@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+{% block title %}Profile Candidat {% endblock %}
+{% block body %}
+    <div class="panel">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <table class="table table-responsive">
+                        <tr>
+                            <td><b>CIN:</b></td>
+                            <td>{{ candidat.cin }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Nom:</b></td>
+                            <td>{{ candidat.nom }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Prénom:</b></td>
+                            <td>{{ candidat.prenom }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Date de naissance:</b></td>
+                            <td>{{ candidat.dateNaissance | date('d/m/Y') }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Email:</b></td>
+                            <td>{{ candidat.email }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Numéro de téléphone:</b></td>
+                            <td>{{ candidat.numTelephone }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>adresse:</b></td>
+                            <td>{{ candidat.adresse }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ville:</b></td>
+                            <td>{{ candidat.ville }}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Gouvenorat:</b></td>
+                            <td>{{ candidat.gouvernorat }}</td>
+                        </tr>
+                    </table>
+                    <div class="divider"></div>
+                    <div class="title-hero">Experiences</div>
+                    <div class="row">
+                        {% for experience in candidat.cv.experiences %}
+                            <div class="col-md-12">
+                                <div class="content-box">
+                                    <h3 class="content-box-header bg-blue-alt">
+                                        {{ experience.poste }} à {{ experience.societe }}
+                                    </h3>
+                                    <div class="content-box-wrapper">
+                                        date début:  {{ experience.dateDebut | date('d/m/Y') }}</br>
+                                        date Fin: {{ experience.dateFin | date('d/m/Y') }}</br>
+                                        <div class="divider"></div>
+                                        {{ experience.description }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="title-hero">Concours</div>
+                    {% for inscription in candidat.inscriptions %}
+                        <div class="content-box">
+                            <h3 class="content-box-header bg-blue">
+
+                                {{ inscription.concour.titre }}
+                                {% if inscription.situation =='a' %}
+                                    <span class="bs-label label-success pull-right">
+                                        accepté
+                                    </span>
+                                {% elseif  inscription.situation =='r' %}
+                                    <span class="bs-label label-danger pull-right">
+                                        Refusé
+                                    </span>
+                                {% elseif  inscription.situation =='e' %}
+                                    <span class="bs-label label-warning pull-right">
+                                        Examen à passer
+                                    </span>
+                                {% elseif  inscription.situation =='ea' %}
+                                    <span class="bs-label label-primary pull-right">
+                                        En attente
+                                    </span>
+                                {% endif %}
+
+                            </h3>
+                            <div class="content-box-wrapper">
+                                Date début: {{ inscription.concour.dateDebut |date('d/m/Y') }}<br>
+                                Date Fin: {{ inscription.concour.dateFin |date('d/m/Y') }}<br>
+                                Postes: {% for poste in inscription.concour.postes  %}{{ poste }} ,{% endfor %}<br>
+                                Lieu : {{ inscription.concour.lieu  }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

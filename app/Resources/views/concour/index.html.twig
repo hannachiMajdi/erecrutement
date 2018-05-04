@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+{% block title %}Liste des Concours{% endblock %}
+{% block body %}
+    {% if is_granted('ROLE_PER') %}
+    <div class="row">
+        <div class="panel" >
+            <div class="panel-body">
+                <h3 class="title-hero">
+                    <button type="button" class="btn btn-info mrg20B pull-right" data-toggle="collapse" data-target="#panel" aria-expanded="true">
+                        <span class="icon-separator">
+                                <i class="glyph-icon icon-minus"></i>
+                        </span>
+                    </button>
+                   Liste des Concours
+                </h3>
+
+                <div class="example-box-wrapper">
+                    <ul class="nav-responsive nav nav-tabs">
+                        <li class="active"><a href="#tab1" data-toggle="tab">Rechercher</a></li>
+                        <li ><a href="{{ path('concour_new') }}" >Ajouter  un concours</a></li>
+                    </ul>
+                    <div class="tab-content" id="panel">
+                        <div class="tab-pane active" id="tab1">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    {{ form_start(form,{'attr':{'class':'form-horizontal bordered-row','novalidate':'novalidate'}}) }}
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Réference: <span class="tx-danger">*</span></label>
+                                            <div class="col-sm-6">
+                                                {{ form_widget(form.reference,{'attr':{'class':'form-control '}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Mots clé: <span class="tx-danger">*</span></label>
+                                            <div class="col-sm-6">
+                                                {{ form_widget(form.mots_cle,{'attr':{'class':'form-control '}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Année: <span class="tx-danger">*</span></label>
+                                            <div class="col-sm-6">
+                                                {{ form_widget(form.annee,{'attr':{'class':'form-control '}}) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="bg-default content-box text-center pad20A mrg25T">
+                                            <button class="btn btn-lg btn-primary" name="rechercher" type="submit">Rechercher</button>
+                                        </div>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    {% endif %}
+    <div class="row">
+        <div class="panel">
+            <div class="panel-body">
+                {% if concours | length == 0 %} pas de resultat
+                {% else %}
+                    {% for concour in concours %}
+                        <div class="col-md-12">
+                            <div class="content-box border-top border-default">
+                                <h3 class="content-box-header clearfix">
+                           <span class="btn-group btn-group-sm float-right" >
+                                    <a href="{{ path('concour_show',{'id':concour.reference}) }}" class="btn btn-default" title="Consulter">
+                                    <i class="glyph-icon icon-eye"></i>
+                                   </a>
+                               {% if is_granted('ROLE_ADMIN') %}
+                                   <a href="{{ path('concour_edit',{'id':concour.reference}) }}" class="btn btn-default" title="Modifier">
+                                    <i class="glyph-icon icon-edit"></i>
+                                   </a>
+                                   <a href="{{ path('concour_change',{'id':concour.reference}) }}" class="btn btn-default"
+                                       {% if concour.statut %}
+                                        title="Désactiver">
+                                            <i class="glyph-icon icon-lock"></i>
+                                       {% else %}
+                                           title="Publier">
+                                           <i class="glyph-icon icon-lock"></i>
+                                       {% endif %}
+                                   </a>
+                               {% endif %}
+                           </span>
+                                </h3>
+                                <div class="content-box-wrapper">
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                        <div class="ribbon">
+                                            {% if concour.statut %}
+                                                <div class="bg-green">Publié</div>
+                                            {% else  %}
+                                                <div class="bg-red">Désactivé</div>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                        <table class="table table-responsive">
+                                            <tr>
+                                                <td>Titre:  {{ concour.titre }}</td>
+                                                <td>Réference: {{ concour.reference }}</td>
+                                                <td>Annee: {{ concour.annee }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Date début: {{ concour.dateDebut | date('d/m/Y') }}</td>
+                                                <td>Date fin: {{ concour.dateFin | date('d/m/Y') }}</td>
+                                                <td>Postes: {% for poste in concour.postes %}
+                                                        {{ poste }} /
+                                                    {% endfor %}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <div class="divider"></div>
+                                    {{ concour.inscriptions |length }} candidats ont postulé
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="navigation">
+                    {{ knp_pagination_render(concours) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+
+    <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
+    <script type="text/javascript">
+        /* Datepicker bootstrap */
+        $(function() { "use strict";
+            $('.bootstrap-datepicker').bsdatepicker({
+                format: 'mm-dd-yyyy'
+            });
+        });
+    </script>
+{% endblock %}

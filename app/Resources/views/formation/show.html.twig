@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="panel">
+        {% if is_granted('ROLE_RESPONSABLE') %}
+        <div class="panel-heading clearfix">
+            <div class="btn-group pull-right">
+                <a href="{{ path('formation_edit',{'id': formation.id}) }}" class="btn btn-warning">Modifier</a>
+                <a href="{{ path('formation_change',{'id': formation.id}) }}" class="btn {% if formation.statut %}btn-danger{% else %}btn-success{% endif %} ">
+                    {% if formation.statut %} Annuler{% else %}Activer{% endif %}
+                   </a>
+            </div>
+        </div>
+        {% endif %}
+        <div class="panel-body">
+            <table class="table table-responsive table-responsive table-hover">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ formation.id }}</td>
+                </tr>
+                <tr>
+                    <th>Libelle</th>
+                    <td>{{ formation.libelle }}</td>
+                </tr>
+                <tr>
+                    <th>Datedebut</th>
+                    <td>{{ formation.dateDebut  }}</td>
+                </tr>
+                <tr>
+                    <th>Datefin</th>
+                    <td>{{ formation.dateFin }}</td>
+                </tr>
+                <tr>
+                    <th>Module</th>
+                    <td>{{ formation.module }}</td>
+                </tr>
+                <tr>
+                    <th>Lieu</th>
+                    <td>{{ formation.lieu }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

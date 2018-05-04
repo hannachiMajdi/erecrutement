@@ -1,0 +1,37 @@
+{% extends 'base_front.html.twig' %}
+{% block title %}Se Connecter!{% endblock %}
+{% block body %}
+
+{{ form_start(form,{'attr':{'class':'col-md-4 col-sm-5 col-xs-11 col-lg-3 center-margin','id':'login-validation'}}) }}
+    <div id="login-form" class="content-box bg-default">
+        <div class="content-box-wrapper pad20A">
+            {% if error %}
+                <div class="alert alert-danger">
+                    <p>{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                </div>
+            {% endif %}
+            <img class="img-responsive logo-bg" src="{{ asset('img/logo.png') }}" alt="">
+            <div class="form-group">
+                <div class="input-group">
+                            <span class="input-group-addon addon-inside bg-gray">
+                                <i class="glyph-icon icon-envelope-o"></i>
+                            </span>
+                    {{ form_widget(form._cin,{'attr':{'class':'form-control','placeholder':'Entrer Le CIN'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                            <span class="input-group-addon addon-inside bg-gray">
+                                <i class="glyph-icon icon-unlock-alt"></i>
+                            </span>
+                    {{ form_widget(form._password,{'attr':{'class':'form-control','placeholder':'Entrer Le mot de passe'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-block btn-blue-alt">Connexion</button>
+            </div>
+              Vous n'avez pas un compte ? <a href="{{ path('inscription_candidat') }}">s'inscrire</a>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

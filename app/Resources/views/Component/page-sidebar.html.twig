@@ -1,0 +1,53 @@
+<div class="clear"></div>
+<div id="page-sidebar">
+    <div class="scroll-sidebar">
+        <ul id="sidebar-menu">
+            <li class="header"><span>Navigation</span></li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <!--<li>
+                <a href="index.html" title="Admin Dashboard">
+                    <i class="glyph-icon icon-linecons-tv"></i>
+                    <span>Admin dashboard</span>
+                </a>
+            </li>-->
+            <li class="divider"></li>
+            <li class="no-menu">
+                <a href="{{ path('personnel_index') }}" title="Frontend template">
+                    <i class="glyph-icon icon-linecons-user"></i>
+                    <span>Gestion des Personnels</span>
+                </a>
+            </li>
+            {% endif %}
+
+              <li class="divider"></li>
+
+              <li class="no-menu">
+                  <a href="{{ path('concour_index') }}" title="Frontend template">
+                      <i class="glyph-icon icon-file-text"></i>
+                      {% if is_granted('ROLE_CANDIDAT') %}
+                      <span>Liste des concours</span>
+                      {% else %}
+                      <span>Gestion des concours</span>
+                      {% endif %}
+              </span>
+                  </a>
+                </li>
+
+                <li class="divider"></li>
+
+              <li class="no-menu">
+                    <a href="{{ path('formation_index') }}" title="Frontend template">
+                        <i class="glyph-icon icon-linecons-beaker"></i>
+                        {% if is_granted('ROLE_CANDIDAT') %}
+                        <span>Liste des formations</span>
+                        {% elseif is_granted('ROLE_RESPONSABLE')   %}
+                        <span>Gestion des formations</span>
+                        {% endif %}
+                </span>
+                    </a>
+                  </li>
+
+          </ul>
+
+    </div>
+</div>

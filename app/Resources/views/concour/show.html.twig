@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ concour.titre }}{% endblock %}
+{% block body %}
+    <div class="panel">
+        <div class="panel-body">
+            <h6 class="title-hero">{{ concour.titre }}</h6>
+            <div class="example-box-wrapper">
+               <div class="col-md-12">
+                   <p>{{ concour.introduction }}</p>
+               </div>
+                <div class="col-md-12">
+                    <table class="table table-responsive">
+                        <tr>
+                            <td>Référence</td>
+                            <td>{{ concour.reference }}</td>
+                        </tr>
+                        <tr>
+                            <td>Mots clés</td>
+                            <td>{{ concour.motsCle }}</td>
+                        </tr>
+                        <tr>
+                            <td>Année</td>
+                            <td>{{ concour.annee }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Lieu</td>
+                            <td>{{ concour.lieu }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date de debut</td>
+                            <td>{{ concour.dateDebut }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Date de Fin</td>
+                            <td>{{ concour.dateFin }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Documents nécéssaires</td>
+                            <td>{{ concour.documentsNecessaire }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Maniére</td>
+                            <td>{{ concour.maniere }}</td>
+                        </tr>
+                        <tr>
+                            <td>Postes demandés</td>
+                            <td>{% for poste in concour.postes %}
+                                {{  poste }}</br>
+                            {% endfor %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Spécialité demandés</td>
+                            <td>{% for poste2 in concour.postes %}
+                                    {% for specialite in poste2.specialites %}
+                                    {{  specialite.libelle }}</br>
+                                {% endfor %}
+                                {% endfor %}
+                            </td>
+                        </tr>
+                       <tr>
+                            <td>Observation</td>
+                            <td>{{ concour.observation }}</td>
+                        </tr>
+                    </table>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <div class="bg-default content-box text-center pad20A mrg25T">
+                        <a class="btn btn-lg btn-primary" href="{{ path('concour_edit',{'id':concour.reference}) }}">Modifier</a>
+                        {% if not (concour.inscriptions | length == 0) %}
+                        <a class="btn btn-lg btn-warning" href="{{ path('concour_preselection',{'id':concour.reference}) }}">Préselection</a>
+                        <a class="btn btn-lg btn-warning" href="{{ path('concour_cloture',{'id':concour.reference}) }}">Cloture</a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_RESPONSABLE') %}
+                        <div class="bg-default content-box text-center pad20A mrg25T">
+                            <a class="btn btn-lg btn-primary" href="{{ path('index_candidat',{'id':concour.reference}) }}">Vérifier les notes</a>
+                        </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_AGENT') %}
+                        <div class="bg-default content-box text-center pad20A mrg25T">
+                            <a class="btn btn-lg btn-primary" href="{{ path('index_candidat',{'id':concour.reference}) }}">Saisir les notes</a>
+                        </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_CANDIDAT') %}
+                         {% if not (app.user  in concour.candidats)  %}
+                    <div class="bg-default content-box text-center pad20A mrg25T">
+                        <a class="btn btn-lg btn-primary" href="{{ path('concour_inscription',{'id':concour.reference}) }}">S'inscrire</a>
+                    </div>
+                        {% endif %}
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

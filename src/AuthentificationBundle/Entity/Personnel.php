@@ -1,0 +1,351 @@
+<?php
+
+namespace AuthentificationBundle\Entity;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * Personnel
+ *
+ * @ORM\Table(name="personnel")
+ * @ORM\Entity(repositoryClass="AuthentificationBundle\Repository\PersonnelRepository")
+ */
+class Personnel implements UserInterface
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     * @Assert\NotBlank(message="La matricule ne doit pas  est vide")
+     * @ORM\Column(name="matricule", type="string", length=8, unique=true)
+     */
+    private $matricule;
+
+    /**
+     * @var string
+     * @ORM\Column(name="email", type="string", length=255 , unique=true)
+     * @Assert\NotBlank(message="L'email ne doit pas étre vide")
+     * @Assert\Email()
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     *
+     * @ORM\Column(name="mots_de_passe", type="string", length=255)
+     */
+    private $motsDePasse;
+    /**
+     *
+     * @ORM\Column(type="json_array")
+     * @Assert\NotBlank(message="La Role ne doit pas étre vide")
+     */
+    private $roles = [];
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="statut", type="boolean")
+     */
+    private $statut  = true;
+
+    /**
+     *
+     *
+     * @var string
+     * @Assert\NotBlank(message="La mot de passe ne doit pas étre vide.")
+     *
+     */
+    private $plainPassword;
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Concour", mappedBy="admin")
+     */
+    private $concours;
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Formation", mappedBy="responsable")
+     */
+    private $formations;
+
+    public function __construct() {
+        $this->concours = new ArrayCollection();
+        $this->formations = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+        $this->motsDePasse = null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMatricule()
+    {
+        return $this->matricule;
+    }
+
+    /**
+     * @param string $matricule
+     */
+    public function setMatricule($matricule)
+    {
+        $this->matricule = $matricule;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMotsDePasse()
+    {
+        return $this->motsDePasse;
+    }
+
+    /**
+     * @param string $motsDePasse
+     */
+    public function setMotsDePasse($motsDePasse)
+    {
+        $this->motsDePasse = $motsDePasse;
+    }
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        // give everyone ROLE_USER!
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return $roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string The password
+     */
+    public function getPassword()
+    {
+        return $this->motsDePasse;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+       return $this->matricule;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Personnel
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Add concour
+     *
+     * @param \AppBundle\Entity\Concour $concour
+     *
+     * @return Personnel
+     */
+    public function addConcour(\AppBundle\Entity\Concour $concour)
+    {
+        $this->concours[] = $concour;
+
+        return $this;
+    }
+
+    /**
+     * Remove concour
+     *
+     * @param \AppBundle\Entity\Concour $concour
+     */
+    public function removeConcour(\AppBundle\Entity\Concour $concour)
+    {
+        $this->concours->removeElement($concour);
+    }
+
+    /**
+     * Get concours
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getConcours()
+    {
+        return $this->concours;
+    }
+
+    public  function hasRole($string){
+        if(in_array($string,$this->getRoles(),true))
+            return true;
+        else
+            return false;
+
+    }
+    public function getRoleNames(){
+        $rolenames=[];
+            if($this->hasRole('ROLE_ADMIN'))array_push($rolenames,'Administrateur web');
+            if($this->hasRole('ROLE_AGENT'))array_push($rolenames,'Agent');
+            if($this->hasRole('ROLE_RESPONSABLE'))array_push($rolenames,'Responsable Grh');
+        return $rolenames;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * @param boolean $statut
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+    }
+
+    public function __toString()
+    {
+        return (string)$this->matricule;
+    }
+
+
+    /**
+     * Add formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     *
+     * @return Personnel
+     */
+    public function addFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations[] = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Remove formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     */
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations->removeElement($formation);
+    }
+
+    /**
+     * Get formations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFormations()
+    {
+        return $this->formations;
+    }
+}

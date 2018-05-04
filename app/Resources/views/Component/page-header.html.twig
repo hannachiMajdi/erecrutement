@@ -1,0 +1,29 @@
+<div id="page-header" class="bg-gradient-6 font-inverse">
+    <div id="mobile-navigation">
+        <button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button>
+        <a href="index.html" class="logo-content-small" title="E-Recrutement"></a>
+    </div>
+    <div id="header-logo" class="logo-bg" >
+        <a > <img src="{{ asset('img/logo.png') }}" class="img-responsive"></a>
+        <a id="close-sidebar" href="#" title="Close sidebar">
+            <i class="glyph-icon icon-angle-left"></i>
+        </a>
+    </div>
+    <div id="header-nav-right">
+        <a class="header-btn" id="logout-btn"  href="{{ path('security_logout') }}" title="Déconnecter">
+            <i class="glyph-icon icon-power-off"></i>
+        </a>
+    </div><!-- #header-nav-right -->
+    <div id="header-nav-left">
+        <div class="clearfix"></div>
+        <span class="label label-azure">
+        Bienvenu
+        {% if is_granted('ROLE_CANDIDAT') %}
+        {{ app.user.nom }} {{ app.user.prenom }}  !
+        {% else %}
+            {{ app.user.matricule }} connecté autant que {% for role in app.user.RoleNames %}{{ role  }}{% endfor %}
+        {% endif %}
+        </span>
+    </div>
+
+</div>
