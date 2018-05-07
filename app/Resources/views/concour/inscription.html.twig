@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Completer votre profile{% endblock %}
 {% block body %}
     <div class="panel">
         <div class="panel-body">
-            <h6 class="title-hero">Remplir votre cv pour continuer</h6>
+            <h6 class="title-hero">Remplir vos coordonnées pour continuer</h6>
             <div class="divider"></div>
             <div class="example-box-wrapper">
                 {{ form_start(form,{'attr':{'class':'form-horizontal bordered-row'}}) }}
-                        <h5 class="title-hero">expeiences</h5>
+                        <h5 class="title-hero">experiences</h5>
                         <ul class="experiences" data-prototype="{{ form_widget(form.experiences.vars.prototype)|e('html_attr') }}"
                             style="list-style: none;">
                             {% for exform in form.experiences %}
@@ -20,12 +20,21 @@
                                 </li>
                             {% endfor %}
                         </ul>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">Specialités: <span class="tx-danger">*</span></label>
-                            <div class="col-sm-6">
-                                {{ form_widget(form.specialites,{'attr':{'class':'form-control chosen-select '}}) }}
+                <div class="divider"></div>
+                <h5 class="title-hero">specialités</h5>
+                <ul class="specialites" data-prototype="{{ form_widget(form.candidatSpecialites.vars.prototype)|e('html_attr') }}"
+                    style="list-style: none;">
+                    {% for spform in form.experiences %}
+                        <li>
+                            <div class="content-box">
+                                <div class="content-box-wrapper">
+                                    {{ form_widget(spform) }}
+                                </div>
                             </div>
-                        </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <div class="divider"></div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Documents nécessaires: <span class="tx-danger">*</span></label>
                             <div class="col-sm-6">
@@ -85,7 +94,8 @@
 {% endblock %}
 {% block javascripts %}
     <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('customJs/custom_js.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('customJs/experience_js.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('customJs/specialite_js.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/chosen/chosen-demo.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
     <script type="text/javascript">

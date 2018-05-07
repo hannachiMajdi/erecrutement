@@ -6,12 +6,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Personnel
  *
  * @ORM\Table(name="personnel")
  * @ORM\Entity(repositoryClass="AuthentificationBundle\Repository\PersonnelRepository")
+ * @UniqueEntity(
+ *     fields={"matricule", "email"},
+ *     errorPath="matricule",
+ *     message="ce matricule/email est déja utilisé"
+ * )
  */
 class Personnel implements UserInterface
 {
@@ -314,4 +320,38 @@ class Personnel implements UserInterface
         return (string)$this->matricule;
     }
 
+
+    /**
+     * Add formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     *
+     * @return Personnel
+     */
+    public function addFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations[] = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Remove formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     */
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations->removeElement($formation);
+    }
+
+    /**
+     * Get formations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFormations()
+    {
+        return $this->formations;
+    }
 }

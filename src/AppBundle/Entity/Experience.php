@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Experience
@@ -23,49 +24,49 @@ class Experience
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Sociéte invalide")
      * @ORM\Column(name="societe", type="string", length=255)
      */
     private $societe;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Poste invalide")
      * @ORM\Column(name="poste", type="string", length=255)
      */
     private $poste;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Date début invalide")
      * @ORM\Column(name="datedebut", type="date")
      */
     private $datedebut;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Date fin invalide")
      * @ORM\Column(name="datefin", type="date")
      */
     private $datefin;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="Date fin invalide")
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
 
     /**
      *
-     * @ORM\ManyToOne(targetEntity="Cv", inversedBy="experiences", cascade={"persist"})
-     * @ORM\JoinColumn(name="cv_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="AuthentificationBundle\Entity\Candidat", inversedBy="experiences", cascade={"persist"})
+     * @ORM\JoinColumn(name="candidat_id", referencedColumnName="id")
      */
-    private $cv;
+    private $candidat;
 
-    public function __construct($cv = null)
+    public function __construct($Candidat = null)
     {
-        $this->cv = $cv;
+        $this->Candidat = $Candidat;
     }
 
 
@@ -191,27 +192,27 @@ class Experience
     }
 
     /**
-     * Set cv
+     * Set Candidat
      *
-     * @param \AppBundle\Entity\Cv $cv
+     * @param \AuthentificationBundle\Entity\Candidat $Candidat
      *
      * @return Experience
      */
-    public function setCv(\AppBundle\Entity\Cv $cv = null)
+    public function setCandidat(\AuthentificationBundle\Entity\Candidat $Candidat = null)
     {
-        $this->cv = $cv;
+        $this->Candidat = $Candidat;
 
         return $this;
     }
 
     /**
-     * Get cv
+     * Get Candidat
      *
-     * @return \AppBundle\Entity\Cv
+     * @return \AuthentificationBundle\Entity\Candidat
      */
-    public function getCv()
+    public function getCandidat()
     {
-        return $this->cv;
+        return $this->Candidat;
     }
 
     public function __toString()

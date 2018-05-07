@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Formation
@@ -23,22 +24,22 @@ class Formation
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="libelle  invalide")
      * @ORM\Column(name="libelle", type="string", length=255)
      */
     private $libelle;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date_debut", type="datetime")
+     * @Assert\NotBlank(message="Date début invalide")
+     * @ORM\Column(name="date_debut", type="date")
      */
     private $dateDebut;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date_fin", type="datetime")
+     * @Assert\NotBlank(message="Date début invalide")
+     * @ORM\Column(name="date_fin", type="date")
      */
     private $dateFin;
 
@@ -51,21 +52,34 @@ class Formation
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="lieu début invalide")
      * @ORM\Column(name="lieu", type="string", length=255)
      */
     private $lieu;
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="statut", type="boolean", nullable=true)
+     */
+    private $statut;
+    /**
      * @ORM\ManyToOne(targetEntity="AuthentificationBundle\Entity\Personnel", inversedBy="formations")
-     * @ORM\JoinColumn(name="id_grh", referencedColumnName="matricule", nullable=FALSE)
+     * @ORM\JoinColumn(name="id_grh", referencedColumnName="id", nullable=FALSE)
      */
     protected $responsable;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Specialite", inversedBy="formations", cascade={"persist"})
-     * @ORM\JoinTable(name="formation_specialite")
+     * @ORM\ManyToMany(targetEntity="Poste", inversedBy="formations", cascade={"persist"})
+     * @ORM\JoinTable(name="post_format")
      */
-    private $specialites;
+    private $postes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AuthentificationBundle\Entity\Candidat", inversedBy="formations", cascade={"persist"})
+     * @ORM\JoinTable(name="candidat_format")
+     */
+    private $candidats;
+
 
     /**
      * Get id
@@ -110,7 +124,7 @@ class Formation
      */
     public function setDateDebut($dateDebut)
     {
-        $this->dateDebut = $dateDebut;
+        $this->dateDebut =  \DateTime::createFromFormat('m-d-Y', $dateDebut);
 
         return $this;
     }
@@ -122,7 +136,8 @@ class Formation
      */
     public function getDateDebut()
     {
-        return $this->dateDebut;
+        if( $this->dateDebut)
+        return $this->dateDebut->format('m-d-Y');
     }
 
     /**
@@ -134,7 +149,7 @@ class Formation
      */
     public function setDateFin($dateFin)
     {
-        $this->dateFin = $dateFin;
+        $this->dateFin =  \DateTime::createFromFormat('m-d-Y', $dateFin);
 
         return $this;
     }
@@ -146,7 +161,9 @@ class Formation
      */
     public function getDateFin()
     {
-        return $this->dateFin;
+        if( $this->dateFin)
+
+            return $this->dateFin->format('m-d-Y');
     }
 
     /**
@@ -220,4 +237,63 @@ class Formation
     {
         return $this->responsable;
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->postes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidats = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add Poste
+     *
+     * @param \AppBundle\Entity\Poste $Poste
+     *
+     * @return Formation
+     */
+    public function addPoste(\AppBundle\Entity\Poste $Poste)
+    {
+        $this->postes[] = $Poste;
+
+        return $this;
+    }
+
+    /**
+     * Remove Poste
+     *
+     * @param \AppBundle\Entity\Poste $Poste
+     */
+    public function removePoste(\AppBundle\Entity\Poste $Poste)
+    {
+        $this->postes->removeElement($Poste);
+    }
+
+    /**
+     * Get Postes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPostes()
+    {
+        return $this->postes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getStatut()
+    {
+        return $this->statut;
+    }
+
+    /**
+     * @param mixed $statut
+     */
+    public function setStatut($statut)
+    {
+        $this->statut = $statut;
+    }
+
 }

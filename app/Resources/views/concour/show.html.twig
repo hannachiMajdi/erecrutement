@@ -1,15 +1,100 @@
 {% extends 'base.html.twig' %}
 {% block title %} {{ concour.titre }}{% endblock %}
+{% block stylesheets %}
+<style>
+    td { color : black;  font-size: 16px;}
+    p { font-size: 20px;}
+</style>
+{% endblock %}
 {% block body %}
+
     <div class="panel">
+        <div class="panel-heading">
+            <h1>{{ concour.titre }}
+                <div class="btn-group  pull-right ">
+                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if not (concour.statut in {'s':'s','c':'c'} ) %}
+                    <a href="{{ path('concour_change',{'id':concour.reference}) }}" >
+                        {% if concour.statut =='p' %}
+                        <button class="btn btn-alt btn-hover btn-danger">
+                            <span>désactiver</span>
+                            <i class="glyph-icon icon-arrow-right"></i>
+                        </button>
+                        {% else %}
+                        <button class="btn btn-alt btn-hover btn-success">
+                            <span>publier</span>
+                            <i class="glyph-icon icon-arrow-right"></i>
+                        </button>
+                        {% endif %}
+                    </a>
+                     {% endif %}
+                    <a href="{{ path('concour_edit',{'id':concour.reference}) }}">
+                        <button class="btn btn-alt btn-hover btn-yellow">
+                            <span>Modifier</span>
+                            <i class="glyph-icon icon-edit"></i>
+                        </button>
+                    </a>
+                    {% if not (concour.inscriptions | length == 0) and not (concour.statut in {'s':'s','c':'c'} ) %}
+                        <a href="{{ path('concour_preselection',{'id':concour.reference}) }}">
+                            <button class="btn btn-alt btn-hover btn-blue-alt">
+                                <span>Préselection</span>
+                                <i class="glyph-icon icon-edit"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                    {% if (concour.statut == 's') %}
+                        <a href="{{ path('concour_cloture',{'id':concour.reference}) }}">
+                            <button class="btn btn-alt btn-hover btn-warning">
+                                <span>Cloturer</span>
+                                <i class="glyph-icon icon-edit"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                    {% if (concour.statut == 'c') %}
+                        <a href="{{ path('candidat_reussies',{'id':concour.reference}) }}">
+                            <button class="btn btn-alt btn-hover btn-primary">
+                                <span>Liste candidat reussits</span>
+                                <i class="glyph-icon icon-arrow-up"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                    {% endif %}
+                    {% if is_granted('ROLE_AGENT') %}
+                        <a href="{{ path('index_candidat',{'id':concour.reference}) }}">
+                            <button class="btn btn-alt btn-hover btn-azure">
+                                <span>Saisir les notes</span>
+                                <i class="glyph-icon icon-edit"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                    {% if is_granted('ROLE_RESPONSABLE') %}
+                        <a href="{{ path('index_candidat',{'id':concour.reference}) }}">
+                            <button class="btn btn-alt btn-hover btn-azure">
+                                <span>Vérifier les notes</span>
+                                <i class="glyph-icon icon-edit"></i>
+                            </button>
+                        </a>
+                    {% endif %}
+                </div>
+            </h1>
+            <span class="bs-label {% if concour.statut =='c' %}
+                                 label-warning">Cloturé
+                {% elseif concour.statut =='s' %}
+                    label-blue-alt">Préselection
+                {% elseif concour.statut =='p' %}
+                    label-success">Publié
+                {% elseif concour.statut =='d' %}
+                    label-danger">Désactivé
+                {% endif %}</span>
+        </div>
         <div class="panel-body">
-            <h6 class="title-hero">{{ concour.titre }}</h6>
-            <div class="example-box-wrapper">
-               <div class="col-md-12">
+            <div class="example-box-wrapper" >
+               <div class="row">
                    <p>{{ concour.introduction }}</p>
                </div>
-                <div class="col-md-12">
-                    <table class="table table-responsive">
+                <div class="divider"></div>
+                <div class="row">
+                    <table class="table table-responsive" >
                         <tr>
                             <td>Référence</td>
                             <td>{{ concour.reference }}</td>
@@ -29,12 +114,12 @@
                         </tr>
                         <tr>
                             <td>Date de debut</td>
-                            <td>{{ concour.dateDebut }}</td>
+                            <td>{{ concour.dateDebut | date ('d/m/Y') }}</td>
                         </tr>
 
                         <tr>
                             <td>Date de Fin</td>
-                            <td>{{ concour.dateFin }}</td>
+                            <td>{{ concour.dateFin | date ('d/m/Y') }}</td>
                         </tr>
 
                         <tr>
@@ -67,7 +152,7 @@
                             <td>{{ concour.observation }}</td>
                         </tr>
                     </table>
-                    {% if is_granted('ROLE_ADMIN') %}
+                   {# {% if is_granted('ROLE_ADMIN') %}
                     <div class="bg-default content-box text-center pad20A mrg25T">
                         <a class="btn btn-lg btn-primary" href="{{ path('concour_edit',{'id':concour.reference}) }}">Modifier</a>
                         {% if not (concour.inscriptions | length == 0) %}
@@ -85,7 +170,7 @@
                         <div class="bg-default content-box text-center pad20A mrg25T">
                             <a class="btn btn-lg btn-primary" href="{{ path('index_candidat',{'id':concour.reference}) }}">Saisir les notes</a>
                         </div>
-                    {% endif %}
+                    {% endif %}#}
                     {% if is_granted('ROLE_CANDIDAT') %}
                          {% if not (app.user  in concour.candidats)  %}
                     <div class="bg-default content-box text-center pad20A mrg25T">

@@ -3,9 +3,11 @@
 {% block body %}
 
     <div class="panel">
+        {% if is_granted('ROLE_RESPONSABLE') %}
         <div class="panel-heading clearfix">
             <a href="{{ path('formation_new') }}" class="btn  btn-success pull-right">+ Ajouter une formation</a>
         </div>
+        {% endif %}
         <div class="panel-body">
             <table class="table table-responsive">
                 <thead>

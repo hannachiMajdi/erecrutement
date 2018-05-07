@@ -1,6 +1,111 @@
 {% extends 'base.html.twig' %}
 {% block title %}Liste des Concours{% endblock %}
 {% block body %}
+    <div class="panel">
+        <div class="panel-heading clearfix">
+            <h1>Liste des concours
+                {% if is_granted('ROLE_ADMIN') %}
+                <div class="btn-toolbar  pull-right ">
+                    <a href="{{ path('concour_new') }}" >
+                        <button class="btn btn-alt btn-hover btn-success">
+                            <span>Publier un nouveau concours</span>
+                            <i class="glyph-icon icon-arrow-right"></i>
+                        </button>
+                    </a>
+                </div>
+                {% endif %}
+            </h1>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+            <form class="form-horizontal bordered-row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Réference:</label>
+                        <div class="col-sm-6">
+                           <input class="form-control" type="text" id="column0_search">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Mots clé:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="column2_search">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Année:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" id="column3_search">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+            <div class="divider"></div>
+            <div class="row">
+                {% if is_granted('ROLE_PER') %}
+                <span class="bs-label label-warning">Cloturé</span>
+                <span class="bs-label label-blue-alt">Préselection</span>
+                <span class="bs-label label-success">Publié</span>
+                <span class="bs-label label-danger">Désactivé</span>
+                {% endif %}
+            <table class="table table-responsive" id="table">
+                <thead>
+                    <th>Réference</th>
+                    <th>Titre</th>
+                    <th>Mots clés</th>
+                    <th>Année</th>
+                    <th>Postes</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </thead>
+                <tbody>
+                {% if concours | length == 0 %} pas de resultat
+                {% else %}
+                {% for concour in concours %}
+                    <tr class="{% if concour.statut =='c' %}
+                                 bg-warning
+                                {% elseif concour.statut =='s' %}
+                                bg-blue-alt
+                                {% elseif concour.statut =='p' %}
+                                bg-success
+                                {% elseif concour.statut =='d' %}
+                                bg-danger
+                                {% endif %}">
+                        <td>{{ concour.reference }}</td>
+                        <td>{{ concour.titre }}</td>
+                        <td>{% if concour.motscle %}{{ concour.motscle }}{% endif %}</td>
+                        <td>{{ concour.annee }}</td>
+                        <td>
+                            <ul>{% for poste in concour.postes %}
+                                   <li>{{ poste }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                        <td>{{ concour.introduction }}</td>
+                        <td>
+                            <a href="{{ path('concour_show',{'id':concour.reference}) }}" >
+                                <button class="btn btn-alt btn-hover btn-info">
+                                    <span>Consulter</span>
+                                    <i class="glyph-icon icon-eye"></i>
+                                </button>
+                            </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+{#
+
     {% if is_granted('ROLE_PER') %}
     <div class="row">
         <div class="panel" >
@@ -133,18 +238,67 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>#}
 
 {% endblock %}
 {% block javascripts %}
 
-    <script type="text/javascript" src="{{ asset('assets/widgets/datepicker/datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/widgets/datatable/datatable-tabletools.js') }}"></script>
     <script type="text/javascript">
-        /* Datepicker bootstrap */
-        $(function() { "use strict";
-            $('.bootstrap-datepicker').bsdatepicker({
-                format: 'mm-dd-yyyy'
+        /* Datatables basic */
+
+        $(document).ready(function() {
+            var table=$('#table').dataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "oLanguage": {
+                    "sProcessing":     "Traitement en cours...",
+                    "sSearch":         "Rechercher&nbsp;:",
+                    "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+                    "sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+                    "sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+                    "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+                    "sInfoPostFix":    "",
+                    "sLoadingRecords": "Chargement en cours...",
+                    "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+                    "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
+                    "oPaginate": {
+                        "sFirst":      "Premier",
+                        "sPrevious":   "Pr&eacute;c&eacute;dent",
+                        "sNext":       "Suivant",
+                        "sLast":       "Dernier"
+                    },
+                    "oAria": {
+                        "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+                        "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+                    }
+                }
             });
+            // #column3_search is a <input type="text"> element
+            $('#column0_search').on( 'keyup', function () {
+                table.api()
+                    .columns( 0 )
+                    .search( this.value )
+                    .draw();
+            } );
+            $('#column2_search').on( 'keyup', function () {
+                table.api()
+                    .columns( 2 )
+                    .search( this.value )
+                    .draw();
+            } );
+            $('#column3_search').on( 'keyup', function () {
+                table.api()
+                    .columns( 3 )
+                    .search( this.value )
+                    .draw();
+            } );
         });
     </script>
 {% endblock %}

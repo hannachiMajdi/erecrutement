@@ -24,6 +24,10 @@
             {{ app.user.matricule }} connecté autant que {% for role in app.user.RoleNames %}{{ role  }}{% endfor %}
         {% endif %}
         </span>
+        {% if is_granted('ROLE_CANDIDAT') %}
+            <br>
+            <a class="btn btn-yellow" href="{{ path('profile_candidat',{'id':app.user.id}) }}">Suivre mon état</a>
+        {% endif %}
     </div>
 
 </div>

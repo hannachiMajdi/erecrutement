@@ -10,6 +10,7 @@
                     <label class="col-sm-3 control-label">Libelle: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.libelle,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.libelle) }}</span>
                     </div>
                 </div>
 
@@ -17,6 +18,7 @@
                     <label class="col-sm-3 control-label">Module: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.module,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.module) }}</span>
                     </div>
                 </div>
 
@@ -24,6 +26,7 @@
                     <label class="col-sm-3 control-label">Lieu: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.lieu,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.lieu) }}</span>
                     </div>
                 </div>
 
@@ -31,6 +34,7 @@
                     <label class="col-sm-3 control-label">Date debut: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.dateDebut,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                        <span class="text-danger">{{ form_errors(form.dateDebut) }}</span>
                     </div>
                 </div>
 
@@ -38,12 +42,14 @@
                     <label class="col-sm-3 control-label">Date Cloture: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.dateFin,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                        <span class="text-danger">{{ form_errors(form.dateFin) }}</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Specialités: <span class="tx-danger">*</span></label>
+                    <label class="col-sm-3 control-label">Postes: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
-                        {{ form_widget(form.specialites,{'attr':{'class':'form-control chosen-select '}}) }}
+                        {{ form_widget(form.postes,{'attr':{'class':'form-control chosen-select '}}) }}
+                        <span class="text-danger">{{ form_errors(form.postes) }}</span>
                     </div>
                 </div>
                 <div class="bg-default content-box text-center pad20A mrg25T">

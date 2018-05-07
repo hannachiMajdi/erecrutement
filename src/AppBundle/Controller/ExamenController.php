@@ -41,6 +41,7 @@ class ExamenController extends Controller
 
                 $pratique = $em->getRepository('AppBundle:Examen')
                     ->findOneBy(['type'=>'p','candidat'=>$canEx['candidat']->getId()]);
+                if($pratique)
                 $pratique->setNote(intval($request->get('p_'.$canEx['candidat']->getId())));
 
                 $ecrit = $em->getRepository('AppBundle:Examen')
@@ -54,16 +55,16 @@ class ExamenController extends Controller
                     ->findOneBy(['type'=>'o','candidat'=>$canEx['candidat']->getId()]);
                 if($request->get('o_check_'.$canEx['candidat']->getId()))
                 $orale->setVerification(true);
-
-                $pratique = $em->getRepository('AppBundle:Examen')
-                    ->findOneBy(['type'=>'p','candidat'=>$canEx['candidat']->getId()]);
-                if($request->get('p_check_'.$canEx['candidat']->getId()))
-                    $pratique->setVerification(true);
-
                 $ecrit = $em->getRepository('AppBundle:Examen')
                     ->findOneBy(['type'=>'e','candidat'=>$canEx['candidat']->getId()]);
                 if($request->get('e_check_'.$canEx['candidat']->getId()))
                     $ecrit->setVerification(true);
+                $pratique = $em->getRepository('AppBundle:Examen')
+                    ->findOneBy(['type'=>'p','candidat'=>$canEx['candidat']->getId()]);
+                if($pratique){
+                    if($request->get('p_check_'.$canEx['candidat']->getId()))
+                    $pratique->setVerification(true);
+                }
                 $em->flush();
             }
             $this->addFlash('success','Verification établite!');

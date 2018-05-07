@@ -11,66 +11,66 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-control-label">CIN<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">CIN<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.cin,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.cin) }}</span>
+                            <span class="text-danger">{{ form_errors(form.cin) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Email<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Email<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.email) }}</span>
+                            <span class="text-danger">{{ form_errors(form.email) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Numéro Téléphone<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Numéro Téléphone<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.num_telephone,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.num_telephone) }}</span>
+                            <span class="text-danger">{{ form_errors(form.num_telephone) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Mot de passe<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Mot de passe<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.plainPassword) }}</span>
+                            <span class="text-danger">{{ form_errors(form.plainPassword) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Confirmer mots de passe<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Confirmer mots de passe<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.plainPassword) }}</span>
+                            <span class="text-danger">{{ form_errors(form.plainPassword) }}</span>
                         </div><!-- form-group -->
                     </div>
                     <div class="col-lg-6">
                         <div class="form-group">
-                            <label class="form-control-label">Nom<span class="tx-danger">*</span>: </label>
+                            <label class="form-control-label">Nom<span class="text-danger">*</span>: </label>
                             {{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.nom) }}</span>
+                            <span class="text-danger">{{ form_errors(form.nom) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Prénom<span class="tx-danger">*</span>: </label>
+                            <label class="form-control-label">Prénom<span class="text-danger">*</span>: </label>
                             {{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.prenom) }}</span>
+                            <span class="text-danger">{{ form_errors(form.prenom) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Date de naissance<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Date de naissance<span class="text-danger">*</span>:</label>
                             <div class="input-prepend input-group">
                                     <span class="add-on input-group-addon">
                                         <i class="glyph-icon icon-calendar"></i>
                                     </span>
                                 {{ form_widget(form.date_naissance,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
                             </div>
-                            <span class="tx-danger">{{ form_errors(form.date_naissance) }}</span>
+                            <span class="text-danger">{{ form_errors(form.date_naissance) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Adresse<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Adresse<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.adresse,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.adresse) }}</span>
+                            <span class="text-danger">{{ form_errors(form.adresse) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Ville<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Ville<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.ville,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.ville) }}</span>
+                            <span class="text-danger">{{ form_errors(form.ville) }}</span>
                         </div><!-- form-group -->
                         <div class="form-group">
-                            <label class="form-control-label">Gouvernorat<span class="tx-danger">*</span>:</label>
+                            <label class="form-control-label">Gouvernorat<span class="text-danger">*</span>:</label>
                             {{ form_widget(form.gouvernorat,{'attr':{'class':'form-control'}}) }}
-                            <span class="tx-danger">{{ form_errors(form.gouvernorat) }}</span>
+                            <span class="text-danger">{{ form_errors(form.gouvernorat) }}</span>
                         </div><!-- form-group -->
                     </div>
 
@@ -90,7 +90,7 @@
         /* Datepicker bootstrap */
         $(function() { "use strict";
             $('.bootstrap-datepicker').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'yyyy-mm-dd'
             });
         });
     </script>

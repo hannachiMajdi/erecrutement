@@ -39,6 +39,11 @@ class Poste
      * @ORM\JoinTable(name="post_specialite")
      */
     private $specialites;
+    /**
+     *
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Formation", mappedBy="postes")
+     */
+    private $formations;
 
     /**
      *
@@ -52,6 +57,7 @@ class Poste
     public function __construct() {
         $this->specialites = new \Doctrine\Common\Collections\ArrayCollection();
         $this->concours = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->formations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -173,5 +179,39 @@ class Poste
     public function __toString()
     {
         return  $this->observation;
+    }
+
+    /**
+     * Add formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     *
+     * @return Poste
+     */
+    public function addFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations[] = $formation;
+
+        return $this;
+    }
+
+    /**
+     * Remove formation
+     *
+     * @param \AppBundle\Entity\Formation $formation
+     */
+    public function removeFormation(\AppBundle\Entity\Formation $formation)
+    {
+        $this->formations->removeElement($formation);
+    }
+
+    /**
+     * Get formations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFormations()
+    {
+        return $this->formations;
     }
 }

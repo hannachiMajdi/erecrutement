@@ -86,7 +86,7 @@ class FormationController extends Controller
      */
     public function editAction(Request $request, Formation $formation)
     {
-        $deleteForm = $this->createDeleteForm($formation);
+
         $editForm = $this->createForm('AppBundle\Form\FormationType', $formation);
         $editForm->handleRequest($request);
 
@@ -99,7 +99,6 @@ class FormationController extends Controller
 
         return $this->render('formation/edit.html.twig', array(
             'formation' => $formation,
-            'form' => $editForm->createView(),
         ));
     }
 
@@ -127,20 +126,21 @@ class FormationController extends Controller
 
         return $this->redirectToRoute('formation_index');
     }
-
     /**
-     * Creates a form to delete a formation entity.
+     * Deletes a formation entity.
      *
-     * @param Formation $formation The formation entity
-     *
-     * @return \Symfony\Component\Form\Form The form
+     * @Route("/{id}/inscription", name="formation_inscription")
+     * @Method("GET")
      */
-    private function createDeleteForm(Formation $formation)
+    public function inscriptionAction(Request $request, Formation $formation)
     {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('formation_delete', array('id' => $formation->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
+        $em = $this->getDoctrine()->getManager();
+        $formation->addCandidat($this->getUser());
+        $em->flush();
+        $this->addFlash('success','Demande effectué');
+
+        return $this->redirectToRoute('formation_index');
     }
+
+
 }

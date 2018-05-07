@@ -2,7 +2,6 @@
 {% block title %} Modification{% endblock %}
 {% block body %}
     <div class="panel">
-
         <div class="panel-body">
             <h6 class="title-hero">Création d'un Concours</h6>
             <div class="example-box-wrapper">
@@ -11,28 +10,29 @@
                     <label class="col-sm-3 control-label">Réference: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.reference,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.reference)}}</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Mots Clés: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
-                        {{ form_widget(form.mots_cle,{'attr':
-                            {
-                                'class':'form-control',
-
-                            }}) }}
+                        {{ form_widget(form.mots_cle,{'attr':{'class':'form-control' }}) }}
+                        <span class="text-danger">{{ form_errors(form.mots_cle)}}</span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Année: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
-                        {{ form_widget(form.annee,{'attr':{'class':'form-control '}}) }}
+                        {{ form_widget(form.annee,{'attr': { 'class':'form-control' }}) }}
+                        <span class="text-danger">{{ form_errors(form.annee)}}</span>
+
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Titre: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.titre,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.titre)}}</span>
                     </div>
                 </div>
 
@@ -40,6 +40,7 @@
                     <label class="col-sm-3 control-label">Lieu: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.lieu,{'attr':{'class':'form-control '}}) }}
+                        <span class="text-danger">{{ form_errors(form.lieu)}}</span>
                     </div>
                 </div>
 
@@ -47,6 +48,8 @@
                     <label class="col-sm-3 control-label">Date debut: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.dateDebut,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                        <span class="text-danger">{{ form_errors(form.dateDebut)}}</span>
+
                     </div>
                 </div>
 
@@ -54,6 +57,7 @@
                     <label class="col-sm-3 control-label">Date Cloture: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.dateFin,{'attr':{'class':'form-control bootstrap-datepicker'}}) }}
+                        <span class="text-danger">{{ form_errors(form.dateFin)}}</span>
                     </div>
                 </div>
 
@@ -61,6 +65,7 @@
                     <label class="col-sm-3 control-label">Introduction: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.introduction,{'attr':{'class':'form-control'}}) }}
+                        <span class="text-danger">{{ form_errors(form.introduction)}}</span>
                     </div>
                 </div>
 
@@ -68,6 +73,7 @@
                     <label class="col-sm-3 control-label">Maniére: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.maniere,{'attr':{'class':'form-control'}}) }}
+                        <span class="text-danger">{{ form_errors(form.maniere)}}</span>
                     </div>
                 </div>
 
@@ -75,6 +81,7 @@
                     <label class="col-sm-3 control-label">Documents nécessaires: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.documentsNecessaire,{'attr':{'class':'form-control'}}) }}
+                        <span class="text-danger">{{ form_errors(form.documentsNecessaire)}}</span>
                     </div>
                 </div>
 
@@ -82,20 +89,19 @@
                     <label class="col-sm-3 control-label">Observation: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.observation,{'attr':{'class':'form-control'}}) }}
+                        <span class="text-danger">{{ form_errors(form.observation)}}</span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">Postes demandés: <span class="tx-danger">*</span></label>
+                    <label class="col-sm-3 control-label">Poste demandé: <span class="tx-danger">*</span></label>
                     <div class="col-sm-6">
                         {{ form_widget(form.postes,{'attr':{'class':'chosen-select'}}) }}
+                        <span class="text-danger">{{ form_errors(form.postes)}}</span>
                     </div>
                 </div>
-
-
-
                 <div class="bg-default content-box text-center pad20A mrg25T">
-                    <button class="btn btn-lg btn-primary">Enregistrer</button>
+                    <button class="btn btn-lg btn-primary" >Enregistrer</button>
                 </div>
                 {{ form_end(form) }}
             </div>
@@ -110,7 +116,7 @@
         /* Datepicker bootstrap */
         $(function() { "use strict";
             $('.bootstrap-datepicker').bsdatepicker({
-                format: 'mm-dd-yyyy'
+                format: 'yyyy-mm-dd'
             });
         });
     </script>

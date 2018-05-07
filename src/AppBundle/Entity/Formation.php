@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Formation
@@ -23,21 +24,21 @@ class Formation
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="libelle  invalide")
      * @ORM\Column(name="libelle", type="string", length=255)
      */
     private $libelle;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Date début invalide")
      * @ORM\Column(name="date_debut", type="date")
      */
     private $dateDebut;
 
     /**
      * @var \DateTime
-     *
+     * @Assert\NotBlank(message="Date début invalide")
      * @ORM\Column(name="date_fin", type="date")
      */
     private $dateFin;
@@ -51,7 +52,7 @@ class Formation
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="lieu début invalide")
      * @ORM\Column(name="lieu", type="string", length=255)
      */
     private $lieu;
@@ -68,10 +69,16 @@ class Formation
     protected $responsable;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Specialite", inversedBy="formations", cascade={"persist"})
-     * @ORM\JoinTable(name="formation_specialite")
+     * @ORM\ManyToMany(targetEntity="Poste", inversedBy="formations", cascade={"persist"})
+     * @ORM\JoinTable(name="post_format")
      */
-    private $specialites;
+    private $postes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AuthentificationBundle\Entity\Candidat", inversedBy="formations", cascade={"persist"})
+     * @ORM\JoinTable(name="candidat_format")
+     */
+    private $candidats;
 
 
     /**
@@ -235,41 +242,42 @@ class Formation
      */
     public function __construct()
     {
-        $this->specialites = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->postes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidats = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * Add specialite
+     * Add Poste
      *
-     * @param \AppBundle\Entity\Specialite $specialite
+     * @param \AppBundle\Entity\Poste $Poste
      *
      * @return Formation
      */
-    public function addSpecialite(\AppBundle\Entity\Specialite $specialite)
+    public function addPoste(\AppBundle\Entity\Poste $Poste)
     {
-        $this->specialites[] = $specialite;
+        $this->postes[] = $Poste;
 
         return $this;
     }
 
     /**
-     * Remove specialite
+     * Remove Poste
      *
-     * @param \AppBundle\Entity\Specialite $specialite
+     * @param \AppBundle\Entity\Poste $Poste
      */
-    public function removeSpecialite(\AppBundle\Entity\Specialite $specialite)
+    public function removePoste(\AppBundle\Entity\Poste $Poste)
     {
-        $this->specialites->removeElement($specialite);
+        $this->postes->removeElement($Poste);
     }
 
     /**
-     * Get specialites
+     * Get Postes
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSpecialites()
+    public function getPostes()
     {
-        return $this->specialites;
+        return $this->postes;
     }
 
     /**
@@ -288,4 +296,38 @@ class Formation
         $this->statut = $statut;
     }
 
+
+    /**
+     * Add candidat
+     *
+     * @param \AuthentificationBundle\Entity\Candidat $candidat
+     *
+     * @return Formation
+     */
+    public function addCandidat(\AuthentificationBundle\Entity\Candidat $candidat)
+    {
+        $this->candidats[] = $candidat;
+
+        return $this;
+    }
+
+    /**
+     * Remove candidat
+     *
+     * @param \AuthentificationBundle\Entity\Candidat $candidat
+     */
+    public function removeCandidat(\AuthentificationBundle\Entity\Candidat $candidat)
+    {
+        $this->candidats->removeElement($candidat);
+    }
+
+    /**
+     * Get candidats
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCandidats()
+    {
+        return $this->candidats;
+    }
 }

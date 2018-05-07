@@ -8,12 +8,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Candidat
  *
  * @ORM\Table(name="candidat")
  * @ORM\Entity(repositoryClass="AuthentificationBundle\Repository\CandidatRepository")
+ * @UniqueEntity(
+ *     fields={"cin", "email"},
+ *     errorPath="cin",
+ *     message="ce cin/email est déja utilisé"
+ * )
  */
 class Candidat implements UserInterface
 {
@@ -31,6 +37,8 @@ class Candidat implements UserInterface
      *
      * @ORM\Column(name="cin", type="string", length=8, unique=true)
      * @Assert\NotBlank(message="Le champs du CIN est vide!")
+     * @Assert\Regex(pattern="/^[0-9]*$/"
+     *     ,message="Cette valeur doit etre numerique")
      * @Assert\Length(
      *      min = 8,
      *      max = 8,
@@ -95,7 +103,7 @@ class Candidat implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="email", type="string", length=255 , unique=true)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="l'email ne doit pas étre vide")
      * @Assert\Email(message="Exemple: Mario@exemple.com")
      */
     private $email;
@@ -104,6 +112,8 @@ class Candidat implements UserInterface
      * @var string
      * @ORM\Column(name="num_telephone", type="string", length=8)
      * @Assert\NotBlank(message="le numéro ne doit pas étre vide")
+     * @Assert\Regex(pattern="/^[0-9]*$/"
+     *     ,message="Cette valeur doit etre numerique")
      * @Assert\Length(
      *     min="8",
      *     max="8",
@@ -115,7 +125,7 @@ class Candidat implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="adresse", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Invalide")
      * @Assert\Length(
      *     min="5",
      *     minMessage="Minimum 5 charactéres",
@@ -126,7 +136,7 @@ class Candidat implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="ville", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Invalide")
      * @Assert\Length(
      *     min="3",
      *     minMessage="Minimum 3 charactéres",
@@ -137,7 +147,7 @@ class Candidat implements UserInterface
     /**
      * @var string
      * @ORM\Column(name="gouvernorat", type="string", length=255)
-     * @Assert\NotBlank()
+     * @Assert\NotBlank(message="Invalide")
      * @Assert\Length(
      *     min="3",
      *     minMessage="Minimum 3 charactéres",
@@ -152,13 +162,6 @@ class Candidat implements UserInterface
      */
     private $document_necessaire;
 
-    /**
-     *
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Cv", inversedBy="candidat")
-     * @ORM\JoinColumn(name="id_cv", referencedColumnName="id")
-     *
-     */
-    private $cv;
 
     /**
      *
@@ -172,12 +175,31 @@ class Candidat implements UserInterface
      *
      */
     private $inscriptions;
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Experience", mappedBy="candidat", cascade={"persist"})
+     */
+    private $experiences;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CandidatSpecialite", mappedBy="candidat", fetch="EXTRA_LAZY", cascade={"persist"})
+     */
+    private $candidatSpecialites;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Formation", mappedBy="candidats")
+     *
+     */
+    private $formations;
 
 
 
     public function __construct() {
         $this->examens = new \Doctrine\Common\Collections\ArrayCollection();
         $this->inscriptions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidatSpecialites = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->experiences = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->formations = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -403,7 +425,7 @@ class Candidat implements UserInterface
      */
     public function setDateNaissance($dateNaissance)
     {
-        $date = \DateTime::createFromFormat('d-m-Y', $dateNaissance);
+        $date = \DateTime::createFromFormat('Y-m-d', $dateNaissance);
         $this->date_naissance = $date;
 
         return $this;
@@ -616,24 +638,77 @@ class Candidat implements UserInterface
         return $concours;
     }
 
-    /**
-     * @return \AppBundle\Entity\Cv
-     */
-    public function getCv()
-    {
-        return $this->cv;
-    }
-
-    /**
-     * @param \AppBundle\Entity\Cv $cv
-     */
-    public function setCv($cv)
-    {
-        $this->cv = $cv;
-    }
 
     public function __toString()
     {
         return $this->nom.' '.$this->prenom;
+    }
+
+    /**
+     * Add candidatSpecialite
+     *
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
+     *
+     * @return Candidat
+     */
+    public function addCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
+    {
+        $this->candidatSpecialites[] = $candidatSpecialite;
+
+        return $this;
+    }
+
+    /**
+     * Remove candidatSpecialite
+     *
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
+     */
+    public function removeCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
+    {
+        $this->candidatSpecialites->removeElement($candidatSpecialite);
+    }
+
+    /**
+     * Get candidatSpecialites
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCandidatSpecialites()
+    {
+        return $this->candidatSpecialites;
+    }
+
+    /**
+     * Add experience
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     *
+     * @return Candidat
+     */
+    public function addExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences[] = $experience;
+
+        return $this;
+    }
+
+    /**
+     * Remove experience
+     *
+     * @param \AppBundle\Entity\Experience $experience
+     */
+    public function removeExperience(\AppBundle\Entity\Experience $experience)
+    {
+        $this->experiences->removeElement($experience);
+    }
+
+    /**
+     * Get experiences
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getExperiences()
+    {
+        return $this->experiences;
     }
 }

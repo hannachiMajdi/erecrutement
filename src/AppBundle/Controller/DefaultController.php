@@ -21,7 +21,7 @@ class DefaultController extends Controller
             return $this->redirectToRoute('concour_index');
         }
 
-        return $this->render('security/acceuil.html.twig');
+        return $this->render('security/acceuil2.html.twig');
     }
 
 

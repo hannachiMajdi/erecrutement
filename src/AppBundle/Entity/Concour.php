@@ -34,6 +34,8 @@ class Concour
      *
      * @ORM\Column(name="annee", type="string")
      * @Assert\NotBlank(message="L'année ne doit pas étre vide")
+     * @Assert\Regex(pattern="/^[0-9]*$/"
+     *     ,message="Cette valeur doit etre numerique")
      * @Assert\Length(
      *      min = 4,
      *      max = 4,
@@ -58,34 +60,34 @@ class Concour
     /**
      * @var \DateTime
      * @Assert\NotBlank(message="Le date de début ne doit pas étre vide")
-     * @ORM\Column(name="date_debut", type="string")
+     * @ORM\Column(name="date_debut", type="date")
      */
     private $dateDebut;
 
     /**
      * @var \DateTime
-     *
-     * @ORM\Column(name="date_fin", type="string")
+     * @Assert\NotBlank(message="Le date de Fin ne doit pas étre vide")
+     * @ORM\Column(name="date_fin", type="date")
      */
     private $dateFin;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="documents_necessaire", type="string", length=255)
+     * @Assert\NotBlank(message="Les documents necessaires de Fin ne doit pas étre vide")
+     * @ORM\Column(name="documents_necessaire", type="string", length=255, nullable=true)
      */
     private $documentsNecessaire;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="L'introduction ne doit pas étre vide")
      * @ORM\Column(name="introduction", type="string", length=500)
      */
     private $introduction;
 
     /**
      * @var string
-     *
+     * @Assert\NotBlank(message="La maniére ne doit pas étre vide")
      * @ORM\Column(name="maniere", type="string", length=255)
      */
     private $maniere;
@@ -102,10 +104,11 @@ class Concour
      * @ORM\Column(name="observation", type="string", length=255)
      */
     private $observation;
+
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="statut", type="boolean")
+     * @ORM\Column(name="statut", type="string", length=1, nullable=true)
      */
     private $statut = true;
 
@@ -250,13 +253,16 @@ class Concour
     /**
      * Set dateDebut
      *
-     * @param string $dateDebut
+     * @param mixed $dateDebut
      *
      * @return Concour
      */
     public function setDateDebut($dateDebut)
     {
-        $this->dateDebut = $dateDebut;
+        if($dateDebut instanceof \DateTime)
+         $this->dateDebut = $dateDebut;
+        else
+            $this->dateDebut = \DateTime::createFromFormat('Y-m-d', $dateDebut);
 
         return $this;
     }
@@ -264,23 +270,29 @@ class Concour
     /**
      * Get dateDebut
      *
-     * @return string
+     * @return \DateTime
      */
     public function getDateDebut()
     {
-        return $this->dateDebut;
+        if( $this->dateDebut)
+
+            return $this->dateDebut->format('Y-m-d');
     }
 
     /**
      * Set dateFin
      *
-     * @param \DateTime $dateFin
+     * @param mixed $dateFin
      *
      * @return Concour
      */
     public function setDateFin($dateFin)
     {
-        $this->dateFin = $dateFin;
+        //$this->dateFin = $dateFin;
+        if($dateFin instanceof \DateTime)
+            $this->dateFin = $dateFin;
+        else
+            $this->dateFin = \DateTime::createFromFormat('Y-m-d', $dateFin);
 
         return $this;
     }
@@ -291,8 +303,9 @@ class Concour
      * @return \DateTime
      */
     public function getDateFin()
-    {
-        return $this->dateFin;
+    { if( $this->dateFin)
+
+        return $this->dateFin->format('Y-m-d');
     }
 
     /**
@@ -534,7 +547,7 @@ class Concour
         return $candidats;
     }
     /**
-     * @return boolean
+     * @return string
      */
     public function getStatut()
     {
@@ -542,7 +555,7 @@ class Concour
     }
 
     /**
-     * @param boolean $statut
+     * @param string $statut
      */
     public function setStatut($statut)
     {
@@ -565,5 +578,18 @@ class Concour
         $this->mots_cle = $mots_cle;
     }
 
+
+    public function inSpeciaite(Specialite $specialite){
+        $specialites =[];
+        foreach ($this->postes as $poste){
+            foreach ($poste->getSpecialites() as $spec){
+                array_push($specialites,$spec);
+            }
+        }
+        if(in_array($specialite,$specialites)){
+            return true;
+        }
+        return false;
+    }
 
 }

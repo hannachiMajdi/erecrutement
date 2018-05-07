@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
-
+{% block title %}Préselection{% endblock %}
 {% block body %}
     <div class="panel">
         <div class="panel-body">
             <h3 class="title-hero">
-                Elements
+               Formulaire de préselection
             </h3>
 
             <div class="example-box-wrapper">
@@ -15,7 +15,7 @@
                             <div class="input-group">
                                 {{ form_widget(form.pourcentage,{'attr':{
                                     'class':'form-control'
-                                    ,'max':'100','min':'1'
+                                    ,'max':'100','min':'1','required':'required'
                                 }}) }}
 
                                 <span class="input-group-addon bg-green">
@@ -31,14 +31,14 @@
                                 {{ form_widget(form.nbrMois,{'attr':{
                                     'class':'form-control',
                                     'placeholder':"mois"
-                                    ,'min':'0'
+                                    ,'min':'0','required':'required'
                                 }}) }}
                             </div>
                             <div class="input-group">
                                 {{ form_widget(form.nbrAnnee,{'attr':{
                                     'class':'form-control',
                                     'placeholder':"Année"
-                                    ,'min':'0'
+                                    ,'min':'0','required':'required'
                                 }}) }}
                             </div>
                         </div>

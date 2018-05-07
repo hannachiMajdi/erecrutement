@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en-gb" dir="ltr">
+<!--Mirrored from demo3.pressapps.co/html/knowledge/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 May 2018 21:23:25 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bienvenue !</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/fav.png') }}" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet">
+    <script src="{{ asset('home/assets/js/jquery.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('home/assets/css/main.css')}}" />
+    <script src="{{ asset('home/assets/js/main.js')}}"></script>
+</head>
+
+<body>
+<div class="section-hero uk-background-blend-color-burn uk-background-top-center uk-background-cover uk-section-large1 cta" style="background-image: url({{ asset('home/assets/img/city.jpg') }})" >
+    <nav class="uk-navbar-container uk-margin uk-navbar-transparent uk-light">
+        <div class="uk-container">
+            <div uk-navbar>
+                <div class="uk-navbar-left">
+                    <a class="uk-navbar-item uk-logo uk-text-uppercase" href="http://www.onm.nat.tn/fr/index.php"><span class="uk-margin-small-right" uk-icon="icon: lifesaver"></span> E-recrutement</a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+    <div class="uk-container hero">
+        <h1 class="uk-heading-primary uk-text-center uk-margin-large-top uk-light">La Platforme E-Recrutement de L'ONM</h1>
+        <p class="uk-text-lead uk-text-center uk-light">La Platforme Officielle de recrutement en ligne de L'ONM</p>
+    </div>
+    <div class="clearfix"></div>
+</div>
+<div class="uk-section">
+    <div class="uk-container">
+        <div class="uk-child-width-1-2@l uk-grid-match uk-grid-medium uk-text-center" uk-grid>
+            <div>
+                <a href="{{ path('login_personnel') }}" class="box uk-border-rounded">
+                    <h2> Escpace Du Personnel de l'ONM</h2>
+                </a>
+            </div>
+            <div>
+                <a href="{{ path('login_candidat') }}" class="box uk-border-rounded">
+                    <h2>Espace Candidat</h2>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="uk-section">
+    <div class="uk-container">
+        <div class="uk-child-width-1-3@s text-dark" uk-grid>
+            <div>
+                <h3>à Propos de nous</h3>
+                <p class="mrg15B">  Création : l’Office National des Mines a été crée en 1962 en tant qu’établissement Public à caractère Industriel et Commercial « E.P.I.C. ».
+                    Loi n°62-17 du 24 mai 1962</p>
+                <p class="mrg15B">   Intégration du Service Géologique : Le Service Géologique à été intégré à l’Office National des Mines en 1981.
+                    Décret n°81-60 du 14 janvier 1981</p>
+
+                <p class="mrg15B">  Reclassement : En 1996, l’Office National des Mines est classé en tant qu'établissement Public à caractère Non Administratif « E.P.N.A. ».Loi 96-74 du 29 juillet 1996
+                </p>
+            </div>
+            <div>
+                <h3>Contact</h3>
+                  <p class="mrg15B"> Tél. : (+216) 71 808 042 / 71 808 266</p>
+                    <p class="mrg15B">  Fax : (+216) 71 808 098</p>
+                    <p class="mrg15B"> Email : contact@onm.nat.tn / onm@onm.nat.tn</p>
+                    <p class="mrg15B"> Adresse : 24 rue de l'Energie, 2035 La Charguia - Tunis BP: 215 – 1080 Tunis Cedex – Tunisie
+                    </p>
+            </div>
+            <div>
+               <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12771.294621498864!2d10.2080272!3d36.8466992!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1e7a4937f95bb604!2sOffice+National+des+Mines+(ONM)!5e0!3m2!1sfr!2stn!4v1524149563136" width="600" height="600" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<footer id="footer" class="uk-section uk-margin-remove uk-section-xsmall uk-text-small uk-text-muted border-top">
+    <div class="uk-container">
+        <div class="uk-child-width-1-2@m uk-text-center" uk-grid>
+            <div class="uk-text-right@m">
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: facebook"></a>
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: google"></a>
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: vimeo"></a>
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: instagram"></a>
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: twitter"></a>
+                <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: youtube"></a>
+            </div>
+            <div class="uk-flex-first@m uk-text-left@m">
+                <p class="uk-text-small">Copyright 2017 Powered by ESEN</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div id="offcanvas" uk-offcanvas="flip: true; overlay: true">
+    <div class="uk-offcanvas-bar">
+        <a class="uk-margin-small-bottom uk-logo uk-text-uppercase" href="index-2.html"><span class="uk-margin-small-right" uk-icon="icon: lifesaver"></span> Knowledge</a>
+        <ul class="uk-nav uk-nav-default uk-text-uppercase">
+            <li><a href="index-2.html">Home</a></li>
+            <li class="uk-parent">
+                <a href="article.html">Article</a>
+                <ul class="uk-nav-sub">
+                    <li><a href="article.html">Scrollspy</a></li>
+                    <li><a href="article-narrow.html">Narrow</a></li>
+                </ul>
+            </li>
+            <li><a href="faq.html">Faq</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="components.html">Components</a></li>
+        </ul>
+        <a href="contact.html" class="uk-button uk-button-small uk-button-default uk-width-1-1 uk-margin">Support</a>
+        <div class="uk-width-auto uk-text-center">
+            <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: facebook"></a>
+            <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: google"></a>
+            <a href="#" class="uk-icon-link uk-margin-small-right" uk-icon="icon: twitter"></a>
+        </div>
+    </div>
+</div>
+
+</body>
+
+
+<!-- Mirrored from demo3.pressapps.co/html/knowledge/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 May 2018 21:23:32 GMT -->
+</html>

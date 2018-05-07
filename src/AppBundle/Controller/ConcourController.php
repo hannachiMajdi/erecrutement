@@ -6,6 +6,7 @@ use AppBundle\Entity\Concour;
 use AppBundle\Entity\Cv;
 use AppBundle\Entity\Examen;
 use AppBundle\Entity\Inscription;
+use AuthentificationBundle\Entity\Candidat;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -28,33 +29,17 @@ class ConcourController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $concourRecherche = new Concour();
-        $form = $this->createForm('AppBundle\Form\ConcourRechercheType',$concourRecherche);
-
-        $form->handleRequest($request);
         $em = $this->getDoctrine()->getManager();
-        if($this->isGranted('ROLE_PER')){
-            if($form->isSubmitted()){
-                $concours = $em->getRepository('AppBundle:Concour')->Rechercher($concourRecherche);
-                $this->addFlash('success ',count($concours).'  Resultats trouvées');
-
-            }else{
-                $concours = $em->getRepository('AppBundle:Concour')->findAll();
-            }
-
+        if($this->isGranted('ROLE_PER')) {
+        $concours = $em->getRepository('AppBundle:Concour')->findAll();
         }else{
-            $concours = $em->getRepository('AppBundle:Concour')->findBy(['statut'=>true]);
+            $concours = $concours = $em->getRepository('AppBundle:Concour')->findBy(['statut'=>'p']);
         }
 
 
 
-        $paginator  = $this->get('knp_paginator');
-        $concours = $paginator->paginate($concours,$request->query->get('page',1),5);
-
-
         return $this->render('concour/index.html.twig', array(
             'concours' => $concours,
-            'form'=> $form->createView()
         ));
     }
 
@@ -73,6 +58,7 @@ class ConcourController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $concour->setAdmin($this->getUser());
+            $concour->setStatut('c');
             $this->reset($concour,$em);
             $concour->setPostes();
             $em->persist($concour);
@@ -141,10 +127,8 @@ class ConcourController extends Controller
      */
     public function changerStatutAction(Request $request, Concour $concour)
     {
-        if($concour->getStatut())
-            $concour->setStatut(false);
-        else
-            $concour->setStatut(true);
+        $statut = ($concour->getStatut() == 'p')?'d':'p';
+        $concour->setStatut($statut);
         $this->getDoctrine()->getManager()->flush();
         $this->addFlash('success','Statut du Concours '.$concour->getReference().' Changé');
         return $this->redirectToRoute('concour_index');
@@ -168,27 +152,42 @@ class ConcourController extends Controller
      */
     public function inscriptionAction(Request $request, Concour $concour)
     {
-        if($this->getUser()->getCv()){
+        if(count($this->getUser()->getExperiences())!= 0){
             $em = $this->getDoctrine()->getManager();
-            $inscription = new Inscription($this->getUser(),$concour,$concour->getReference().'-'.$this->getUser()->getId(),'En attente');
+            $inscription = new Inscription($this->getUser(),$concour,$concour->getReference().'-'.$this->getUser()->getId(),'ea');
             $em->persist($inscription);
             $em->flush();
-            $this->addFlash('success','votre demande à été ajouté avec success');
+            $this->addFlash('success','votre demande à été ajouté avec succés');
             return $this->redirectToRoute('concour_index');
         }else{
-            $cv = new Cv();
-            $form = $this->createForm('AppBundle\Form\CvType',$cv);
+
+            $form = $this->createForm('AppBundle\Form\CvType');
             $form->handleRequest($request);
             if($form->isSubmitted()&& $form->isValid()){
-                $inscription = new Inscription($this->getUser(),$concour,$concour->getReference().'-'.$this->getUser()->getId(),'a');
+                $inscription = new Inscription($this->getUser(),$concour,$concour->getReference().'-'.$this->getUser()->getId(),'ea');
                 $em = $this->getDoctrine()->getManager();
-                $cv = $this->upload($cv,$form['documentsnecessaires']->getData());
+                $user = $this->upload($this->getUser(),$form['documentsnecessaires']->getData());
                 $experiences = $form['experiences']->getData();
-                foreach ($experiences as $exp) $exp->setCv($cv);
+                $specialites = $form['candidatSpecialites']->getData();
+                foreach ($specialites as $spec)
+                {
+                    $this->getUser()->addCandidatSpecialite($spec);
+                    $spec->setCandidat($this->getUser());
+                    $em->persist($spec);
+                   if(! $concour->inSpeciaite($spec->getSpecialite()))
+                   {
+                       $inscription->setSituation('r');
+                       $this->addFlash('error','votre demande est refusé');
+                   }
+                }
+                foreach ($experiences as $exp)
+                {
+                    $this->getUser()->addExperience($exp);
+                    $exp->setCandidat($this->getUser());
+                    $em->persist($exp);
+                }
+
                 $em->persist($inscription);
-                $this->getUser()->setCv($cv);
-                $cv->setCandidat($this->getUser());
-                $em->persist($cv);
                 $em->flush();
                 $this->addFlash('success','votre demande à été ajouté avec succés');
                 return $this->redirectToRoute('concour_index');
@@ -211,8 +210,8 @@ class ConcourController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted()){
             $em = $this->getDoctrine()->getManager();
-            foreach ($concour->getInscriptions() as $histo){
-                $histo->setSituation('r');
+            foreach ($concour->getInscriptions() as $inscription){
+                $inscription->setSituation('r');
             }
             $em->flush();
             $percent = intval($form['pourcentage']->getData());
@@ -225,26 +224,24 @@ class ConcourController extends Controller
                 $inscription = $em->getRepository('AppBundle:Inscription')->find($candidat_id['id']);
                 $inscription->setSituation('e');
                $examen_orale = new Examen('o',4,$inscription->getCandidat(),$inscription->getConcour());
-               $examen_theorique = new Examen('e',6,$inscription->getCandidat(),$inscription->getConcour());
+               $examen_ecrit = new Examen('e',6,$inscription->getCandidat(),$inscription->getConcour());
                $em->persist($examen_orale);
+                $em->persist($examen_ecrit);
                $postes = $inscription->getConcour()->getPostes();
                foreach ($postes as $poste){
                    if(strtoupper($poste->getObservation()) === 'CHAUFFEUR'){
-
                        $examen_pratique = new Examen('p',1,$inscription->getCandidat(),$inscription->getConcour());
                        $em->persist($examen_pratique);
                        break;
                    }
                }
-               if($inscription->getC())
-               $em->persist($examen_theorique);
                 $em->flush();
             }
+            $concour->setStatut('s');
             $em->flush();
             $this->addFlash('success','Préselection établie avec succés !');
             $this->addFlash('success',count($candidats_ids).' candidat à été selectionnés!');
             $this->redirectToRoute('concour_index');
-
         }
         return $this->render('concour/preselection.html.twig',
             array(
@@ -293,11 +290,13 @@ class ConcourController extends Controller
                 $inscription->setSituation('a');
                 $em->flush();
             }
+            $concour->setStatut('c');
             $em->flush();
+
             $this->addFlash('success','Sélection établie avec succés !');
             $this->addFlash('success',count($candidats_ids).' candidat ont été selectionnés!');
            return $this->redirectToRoute('concour_index');
-k,n
+
         }
         return $this->render('concour/cloture.html.twig',
             array(
@@ -351,10 +350,10 @@ k,n
         $days = $annee * 365 + $mois * 30 ;
         $sql = $em->getConnection();
         $query = $sql->prepare('
-                        SELECT h.id ,SUM(DATEDIFF(e.datefin,e.datedebut)) as days
-                        FROM candidat c, inscription h ,cv ,experience e
-                        WHERE c.id_cv = cv.id AND e.cv_id = cv.id AND c.id = h.id_candidat AND h.id_concour = :concour
-                        AND h.moyenne >= :moyenne
+                        SELECT i.id ,SUM(DATEDIFF(e.datefin,e.datedebut)) as days
+                        FROM candidat c, inscription i,experience e
+                        WHERE   e.candidat_id = c.id AND c.id = i.id_candidat AND i.id_concour = :concour
+                        AND i.moyenne >= :moyenne
                         GROUP BY c.id
                         HAVING days > :da 
                         ORDER BY days DESC 
@@ -390,16 +389,16 @@ k,n
 
     }
 
-    public function upload(Cv $cv,$file){
+    public function upload(Candidat $candidat,$file){
             $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
             // moves the file to the directory where brochures are stored
             $file->move(
                 $this->getParameter('documents_directory'),
                 $fileName
             );
-        $cv->setDocumentsnecessaire($fileName);
+        $candidat->setDocumentNecessaire($fileName);
 
-        return $cv;
+        return $candidat;
     }
     /**
      * @return string

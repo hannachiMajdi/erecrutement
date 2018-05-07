@@ -16,9 +16,9 @@ class FormationRepository extends \Doctrine\ORM\EntityRepository
         $SQL = $this->getEntityManager()->getConnection();
         $query = $SQL->prepare('
         SELECT f.id 
-        FROM formation f , formation_specialite fs , education e , cv, candidat c
-        WHERE f.id = fs.formation_id AND fs.specialite_id = e.specialite_id AND e.cv_id = cv.id
-        AND cv.id_candidat = c.id AND c.id = :id
+        FROM formation f , post_format fs , inscription i  , concour_poste cp, concour c
+        WHERE f.id = fs.formation_id AND fs.poste_id = cp.id_poste AND c.reference = cp.id_concour AND i.id_concour = c.reference
+        AND i.id_candidat = :id 
         GROUP BY f.id ;
         ');
         $query->bindValue('id',$candidat->getId(),\PDO::PARAM_INT);

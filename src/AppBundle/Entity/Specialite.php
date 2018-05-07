@@ -42,22 +42,14 @@ class Specialite
     private $postes;
 
     /**
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cv", mappedBy="specialites")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CandidatSpecialite", mappedBy="specialite", fetch="EXTRA_LAZY")
      */
-    private $cvs;
-
-    /**
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Formation", mappedBy="specialites")
-     */
-    private $formations;
+    private $candidatSpecialites;
 
 
     public function __construct() {
         $this->postes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->formations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->cvs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidatSpecialites = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -153,76 +145,43 @@ class Specialite
         return $this->libelle;
     }
 
-    /**
-     * Add cv
-     *
-     * @param \AppBundle\Entity\Cv $cv
-     *
-     * @return Specialite
-     */
-    public function addCv(\AppBundle\Entity\Cv $cv)
-    {
-        $this->cvs[] = $cv;
-
-        return $this;
-    }
-
-    /**
-     * Remove cv
-     *
-     * @param \AppBundle\Entity\Cv $cv
-     */
-    public function removeCv(\AppBundle\Entity\Cv $cv)
-    {
-        $this->cvs->removeElement($cv);
-    }
-
-    /**
-     * Get cvs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCvs()
-    {
-        return $this->cvs;
-    }
-
     public function __toString()
     {
         return $this->libelle;
     }
 
+
     /**
-     * Add formation
+     * Add candidatSpecialite
      *
-     * @param \AppBundle\Entity\Formation $formation
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
      *
      * @return Specialite
      */
-    public function addFormation(\AppBundle\Entity\Formation $formation)
+    public function addCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
     {
-        $this->formations[] = $formation;
+        $this->candidatSpecialites[] = $candidatSpecialite;
 
         return $this;
     }
 
     /**
-     * Remove formation
+     * Remove candidatSpecialite
      *
-     * @param \AppBundle\Entity\Formation $formation
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
      */
-    public function removeFormation(\AppBundle\Entity\Formation $formation)
+    public function removeCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
     {
-        $this->formations->removeElement($formation);
+        $this->candidatSpecialites->removeElement($candidatSpecialite);
     }
 
     /**
-     * Get formations
+     * Get candidatSpecialites
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getFormations()
+    public function getCandidatSpecialites()
     {
-        return $this->formations;
+        return $this->candidatSpecialites;
     }
 }

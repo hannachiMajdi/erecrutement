@@ -24,11 +24,15 @@ class CvType extends AbstractType
                 'allow_add' => true,
                 'allow_delete' => true,
                 'by_reference' => true,
+                'label'=>false
             ))
-            ->add('specialites',EntityType::class,array(
-                'class'=>Specialite::class,
-                'multiple'=>true,
-
+            ->add('candidatSpecialites', CollectionType::class, array(
+                'entry_type' => CandidatSpecialiteType::class,
+                'entry_options' => array('label' => false),
+                'allow_add' => true,
+                'allow_delete' => true,
+                'by_reference' => true,
+                'label'=>false
             ))
             ->add('documentsnecessaires', FileType::class, [
 
@@ -40,13 +44,13 @@ class CvType extends AbstractType
     }/**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+   /* public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Cv'
+            'data_class' => 'AuthentificationBundle\Entity\Candidat'
         ));
     }
-
+*/
     /**
      * {@inheritdoc}
      */

@@ -17,10 +17,19 @@ class CandidatController extends Controller
      */
     public function profileCandidatAction(Request $request, Candidat $candidat)
     {
-      //  if($this->isGranted('ROLE_CANDIDAT')){
-            return $this->render('candidat/show.html.twig', array(
-                'candidat' => $candidat,
-            ));
+      if(
+          ( ($this->isGranted('ROLE_CANDIDAT')) && ($this->getUser() === $candidat ))
+          || ($this->isGranted('ROLE_ADMIN'))
+      )
+    {
+          return $this->render('candidat/show.html.twig', array(
+              'candidat' => $candidat,
+          ));
+      }else{
+          $this->addFlash('error','access denied');
+          return $this->redirectToRoute('concours_index');
+      }
+
 
        // }
     }

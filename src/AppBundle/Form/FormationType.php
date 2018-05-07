@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\Poste;
 use AppBundle\Entity\Specialite;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,8 +22,8 @@ class FormationType extends AbstractType
             ->add('dateFin',TextType::class)
             ->add('module')
             ->add('lieu')
-            ->add('specialites',EntityType::class,array(
-                'class'=>Specialite::class,
+            ->add('postes',EntityType::class,array(
+                'class'=>Poste::class,
                 'multiple'=>true,
             ));
     }/**

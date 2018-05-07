@@ -6,12 +6,18 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Personnel
  *
  * @ORM\Table(name="personnel")
  * @ORM\Entity(repositoryClass="AuthentificationBundle\Repository\PersonnelRepository")
+ * @UniqueEntity(
+ *     fields={"matricule", "email"},
+ *     errorPath="matricule",
+ *     message="ce matricule/email est déja utilisé"
+ * )
  */
 class Personnel implements UserInterface
 {

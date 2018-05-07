@@ -2,6 +2,9 @@
 
 {% block body %}
     <div class="panel">
+        {% if is_granted('ROLE_CANDIDAT') %}
+        <a href="{{ path('formation_inscription',{'id': formation.id}) }}" class="btn btn-sm btn-success">Inscription</a>
+        {% endif %}
         {% if is_granted('ROLE_RESPONSABLE') %}
         <div class="panel-heading clearfix">
             <div class="btn-group pull-right">

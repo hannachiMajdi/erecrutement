@@ -42,23 +42,14 @@ class Specialite
     private $postes;
 
     /**
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Cv", mappedBy="specialites")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CandidatSpecialite", mappedBy="specialite", fetch="EXTRA_LAZY")
      */
-    private $cvs;
-
-    /**
-     *
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Formation", mappedBy="specialites")
-     */
-    private $formations;
-
-
+    private $candidatSpecialites;
 
 
     public function __construct() {
         $this->postes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->cvs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->candidatSpecialites = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -154,42 +145,43 @@ class Specialite
         return $this->libelle;
     }
 
+    public function __toString()
+    {
+        return $this->libelle;
+    }
+
+
     /**
-     * Add cv
+     * Add candidatSpecialite
      *
-     * @param \AppBundle\Entity\Cv $cv
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
      *
      * @return Specialite
      */
-    public function addCv(\AppBundle\Entity\Cv $cv)
+    public function addCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
     {
-        $this->cvs[] = $cv;
+        $this->candidatSpecialites[] = $candidatSpecialite;
 
         return $this;
     }
 
     /**
-     * Remove cv
+     * Remove candidatSpecialite
      *
-     * @param \AppBundle\Entity\Cv $cv
+     * @param \AppBundle\Entity\CandidatSpecialite $candidatSpecialite
      */
-    public function removeCv(\AppBundle\Entity\Cv $cv)
+    public function removeCandidatSpecialite(\AppBundle\Entity\CandidatSpecialite $candidatSpecialite)
     {
-        $this->cvs->removeElement($cv);
+        $this->candidatSpecialites->removeElement($candidatSpecialite);
     }
 
     /**
-     * Get cvs
+     * Get candidatSpecialites
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCvs()
+    public function getCandidatSpecialites()
     {
-        return $this->cvs;
-    }
-
-    public function __toString()
-    {
-        return $this->libelle;
+        return $this->candidatSpecialites;
     }
 }
